@@ -3,12 +3,18 @@ VERSION ?= dev
 LDFLAGS := -s -w -X main.version=$(VERSION)
 GITLEAKS ?= gitleaks
 
+ifeq ($(OS),Windows_NT)
+HOST_BINARY := $(BINARY).exe
+else
+HOST_BINARY := $(BINARY)
+endif
+
 .PHONY: all build test fmt vet lint tidy clean cross hooks secrets
 
 all: build
 
 build:
-	go build -trimpath -ldflags "$(LDFLAGS)" -o bin/$(BINARY) ./cmd/dscodex
+	go build -trimpath -ldflags "$(LDFLAGS)" -o bin/$(HOST_BINARY) ./cmd/dscodex
 
 test:
 	go test -race ./...
