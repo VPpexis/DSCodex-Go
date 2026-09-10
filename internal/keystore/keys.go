@@ -81,9 +81,13 @@ func ReadProxyURL(keyFile string) string {
 }
 
 // WriteProxyURL stores proxyURL in keyFile, DPAPI-protecting it on Windows.
-// An empty or whitespace-only URL removes the stored proxy.
+// An empty or whitespace-only URL removes the stored proxy. State-changing
+// writes also migrate a legacy plaintext Windows key.
 func WriteProxyURL(keyFile, proxyURL string) error {
 	trimmed := strings.TrimSpace(proxyURL)
+	if _, err := MigrateLegacyStoredKey(keyFile); err != nil {
+		return err
+	}
 	config, err := ReadRouterConfig(keyFile, true)
 	if err != nil {
 		return err
