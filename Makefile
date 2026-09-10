@@ -34,8 +34,7 @@ cross:
 
 hooks:
 	git config core.hooksPath .githooks
-	@echo "pre-commit hook installed: .githooks/pre-commit (gitleaks, or pattern fallback)"
+	@echo pre-commit hook installed: .githooks/pre-commit (gitleaks, or pattern fallback)
 
 secrets:
-	@command -v gitleaks >/dev/null 2>&1 || (echo "gitleaks not installed: https://github.com/gitleaks/gitleaks"; exit 1)
-	gitleaks detect --source . --redact --verbose
+	gitleaks git --redact --verbose
