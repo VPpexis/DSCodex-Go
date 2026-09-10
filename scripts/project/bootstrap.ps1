@@ -39,6 +39,10 @@ param(
 
 $ErrorActionPreference = "Stop"
 
+# gh emits UTF-8; Windows PowerShell 5.1 would otherwise decode native command
+# output with the OEM code page and fail to match existing titles.
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+
 function Write-Step([string]$Message) {
     Write-Host ""
     Write-Host "==> $Message" -ForegroundColor Cyan
@@ -51,6 +55,20 @@ function Invoke-Gh {
         throw "gh $($GhArgs -join ' ') failed with exit code $LASTEXITCODE"
     }
     return $output
+}
+
+# Runs gh where a nonzero exit is expected (already-linked sub-issues,
+# duplicate project items). Windows PowerShell 5.1 turns native stderr into a
+# terminating error under ErrorActionPreference=Stop, so merge stderr and
+# temporarily relax the preference. Returns the exit code.
+function Invoke-GhSoft {
+    param([string[]]$GhArgs)
+    $previous = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    $null = & gh @GhArgs 2>&1
+    $code = $LASTEXITCODE
+    $ErrorActionPreference = $previous
+    return $code
 }
 
 if (-not (Get-Command gh -ErrorAction SilentlyContinue)) {
@@ -177,8 +195,8 @@ $linked = 0
 $linkSkipped = 0
 foreach ($item in $taskEntries) {
     if (-not $item.entry.id -or -not $item.epicNodeId) { $linkSkipped++; continue }
-    $null = & gh api graphql -f "query=$subIssueQuery" -f "epic=$($item.epicNodeId)" -f "task=$($item.entry.id)" 2>$null
-    if ($LASTEXITCODE -eq 0) {
+    $code = Invoke-GhSoft @("api", "graphql", "-f", "query=$subIssueQuery", "-f", "epic=$($item.epicNodeId)", "-f", "task=$($item.entry.id)")
+    if ($code -eq 0) {
         $linked++
     } else {
         $linkSkipped++
@@ -269,37 +287,31 @@ foreach ($epic in $spec.epics) {
     }
 }
 
-$added = 0
-foreach ($item in $allItems) {
-    $url = & $issueUrl $item.number
-    $null = & gh project item-add $projectNumber --owner $Owner --url $url --format json 2>$null
-    if ($LASTEXITCODE -eq 0) { $added++ } else { Write-Warning "Could not add #$($item.number) to the project" }
-}
-Write-Host "Items added or already present: $added/$($allItems.Count)"
-
-if (-not $SkipFields) {
-    Write-Step "Field values (this takes a few minutes)"
-    foreach ($item in $allItems) {
-        $url = & $issueUrl $item.number
-        $edits = @(
-            @{ field = "Phase"; value = $item.phase },
-            @{ field = "Area"; value = $item.area },
-            @{ field = "Platform"; value = $item.platform },
-            @{ field = "Priority"; value = $item.priority },
-            @{ field = "Size"; value = $item.size }
-        )
-        foreach ($edit in $edits) {
-            $null = & gh project item-edit $projectNumber --owner $Owner --url $url --field $edit.field --value $edit.value 2>$null
-            if ($LASTEXITCODE -ne 0) {
-                Write-Warning "Could not set $($edit.field) on #$($item.number)"
-            }
-        }
-        $null = & gh project item-edit $projectNumber --owner $Owner --url $url --field "Est. days" --number $item.estDays 2>$null
-        if ($LASTEXITCODE -ne 0) {
-            Write-Warning "Could not set Est. days on #$($item.number)"
+# Skip items already in the project (saves GraphQL budget on re-runs).
+$existingItems = @{}
+try {
+    $itemList = (Invoke-Gh @("project", "item-list", "$projectNumber", "--owner", $Owner, "--limit", "1000", "--format", "json") | ConvertFrom-Json).items
+    foreach ($existing in $itemList) {
+        if ($existing.content -and $existing.content.number) {
+            $existingItems[[string]$existing.content.number] = $true
         }
     }
-    Write-Host "Field values set."
+} catch {
+    Write-Warning "Could not list existing project items; attempting to add all"
+}
+
+$added = 0
+$skipped = 0
+foreach ($item in $allItems) {
+    if ($existingItems.ContainsKey([string]$item.number)) { $skipped++; continue }
+    $url = & $issueUrl $item.number
+    $code = Invoke-GhSoft @("project", "item-add", "$projectNumber", "--owner", $Owner, "--url", $url, "--format", "json")
+    if ($code -eq 0) { $added++ } else { Write-Warning "Could not add #$($item.number) to the project" }
+}
+Write-Host "Items added: $added; already present: $skipped"
+
+if (-not $SkipFields) {
+    & (Join-Path $scriptDir "sync-fields.ps1") -Owner $Owner -Repo $Repo -ProjectNumber $projectNumber
 }
 
 Write-Step "Done"
