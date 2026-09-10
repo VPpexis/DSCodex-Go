@@ -1,6 +1,8 @@
 BINARY  := dscodex
 VERSION ?= dev
 LDFLAGS := -s -w -X main.version=$(VERSION)
+GOLANGCI_LINT ?= golangci-lint
+GITLEAKS ?= gitleaks
 
 .PHONY: all build test fmt vet lint tidy clean cross hooks secrets
 
@@ -19,7 +21,7 @@ vet:
 	go vet ./...
 
 lint:
-	golangci-lint run ./...
+	$(GOLANGCI_LINT) run ./...
 
 tidy:
 	go mod tidy
@@ -40,4 +42,4 @@ hooks:
 	@echo pre-commit hook installed: .githooks/pre-commit (gitleaks, or pattern fallback)
 
 secrets:
-	gitleaks git --redact --verbose
+	$(GITLEAKS) git --redact --verbose
