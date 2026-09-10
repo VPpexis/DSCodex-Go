@@ -59,6 +59,7 @@ Status legend: `—` not started · `WIP` in progress · `OK` ported and tested 
 | Node version gate not applicable | None | No Node runtime |
 | Autostart embeds binary path, not node+script | Reinstall if binary moves | Static binary |
 | `serve` does not set `DSCODEX_PROXY_REEXEC` | None | Node-only mechanism |
+| Picker display names are plain (`DeepSeek V4 Flash`) | Cosmetic; slugs, wire models, and routing unchanged | Product choice for DSCodex-Go |
 
 ## Test parity suites
 

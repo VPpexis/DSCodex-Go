@@ -925,7 +925,7 @@
           "priority": "High",
           "size": "S",
           "est_days": 0.25,
-          "body": "## Goal\nRun the picker and state smokes against the desktop app catalog on macOS.\n\n## Acceptance criteria\n- [ ] `🐳 V4 Flash` and `🐳 V4 Pro` visible with `high|max` efforts\n- [ ] Native GPT entries preserved"
+          "body": "## Goal\nRun the picker and state smokes against the desktop app catalog on macOS.\n\n## Acceptance criteria\n- [ ] `DeepSeek V4 Flash` and `DeepSeek V4 Pro` visible with `high|max` efforts\n- [ ] Native GPT entries preserved"
         },
         {
           "key": "P7.8",

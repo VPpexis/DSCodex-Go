@@ -42,13 +42,13 @@ var DeepSeekModels = []Model{
 	{
 		PickerSlug:  "deepseek/deepseek-v4-flash",
 		WireModel:   "deepseek-v4-flash",
-		DisplayName: "🐳 V4 Flash",
+		DisplayName: "DeepSeek V4 Flash",
 		ProductName: "DeepSeek V4 Flash",
 	},
 	{
 		PickerSlug:  "deepseek/deepseek-v4-pro",
 		WireModel:   "deepseek-v4-pro",
-		DisplayName: "🐳 V4 Pro",
+		DisplayName: "DeepSeek V4 Pro",
 		ProductName: "DeepSeek V4 Pro",
 	},
 }

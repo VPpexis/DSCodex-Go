@@ -26,8 +26,10 @@ name in Go style where practical, and its behavior is the contract.
 ## Function-level notes
 
 ### `constants.mjs`
-- `DEEPSEEK_MODELS` (picker slug, wire model, display/product names) must match
-  exactly — the catalog and routing depend on both slug forms.
+- `DEEPSEEK_MODELS` picker slugs and wire models must match exactly — the
+  catalog and routing depend on both slug forms. Display names intentionally
+  differ (plain `DeepSeek V4 Flash` / `DeepSeek V4 Pro`; see
+  `03-parity-matrix.md`).
 - `pathsFor()` returns the same absolute paths; no new state files.
 - `needsShellSpawn` only affects Windows `.cmd`/`.bat` execution.
 
