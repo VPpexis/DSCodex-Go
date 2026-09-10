@@ -5,8 +5,10 @@ GITLEAKS ?= gitleaks
 
 ifeq ($(OS),Windows_NT)
 HOST_BINARY := $(BINARY).exe
+CROSS_BUILD = set GOOS=$(1)&& set GOARCH=$(2)&& go build -trimpath -o dist/$(BINARY)-$(1)-$(2)$(3) ./cmd/dscodex
 else
 HOST_BINARY := $(BINARY)
+CROSS_BUILD = GOOS=$(1) GOARCH=$(2) go build -trimpath -o dist/$(BINARY)-$(1)-$(2)$(3) ./cmd/dscodex
 endif
 
 .PHONY: all build test fmt vet lint tidy clean cross hooks secrets
@@ -35,12 +37,12 @@ clean:
 	rm -rf bin dist
 
 cross:
-	GOOS=darwin  GOARCH=amd64 go build -trimpath -o dist/$(BINARY)-darwin-amd64 ./cmd/dscodex
-	GOOS=darwin  GOARCH=arm64 go build -trimpath -o dist/$(BINARY)-darwin-arm64 ./cmd/dscodex
-	GOOS=linux   GOARCH=amd64 go build -trimpath -o dist/$(BINARY)-linux-amd64 ./cmd/dscodex
-	GOOS=linux   GOARCH=arm64 go build -trimpath -o dist/$(BINARY)-linux-arm64 ./cmd/dscodex
-	GOOS=windows GOARCH=amd64 go build -trimpath -o dist/$(BINARY)-windows-amd64.exe ./cmd/dscodex
-	GOOS=windows GOARCH=arm64 go build -trimpath -o dist/$(BINARY)-windows-arm64.exe ./cmd/dscodex
+	$(call CROSS_BUILD,darwin,amd64,)
+	$(call CROSS_BUILD,darwin,arm64,)
+	$(call CROSS_BUILD,linux,amd64,)
+	$(call CROSS_BUILD,linux,arm64,)
+	$(call CROSS_BUILD,windows,amd64,.exe)
+	$(call CROSS_BUILD,windows,arm64,.exe)
 
 hooks:
 	git config core.hooksPath .githooks
