@@ -37,6 +37,22 @@ The backlog is defined as code in `scripts/project/issues.json` and applied by
 | Docs & Release | Table | Filter: `area:Docs,CI/Release` |
 | Blocked | Table | Filter: `status:Blocked` |
 
+### Creating views (one-time UI)
+
+1. Open the project and click **New view** to the right of the existing view tabs.
+2. Rename it: **View options** (gear icon next to the search bar) → **Rename view**.
+3. Set the layout: **View options** → **Layout** → Table / Board / Roadmap.
+4. Group it: **View options** → **Group by** → choose a field. On a Board, the
+   group field becomes the columns.
+5. Filter it: click the **Filter** icon in the toolbar, type the filter, press
+   Enter. Values with special characters can be picked from the autocomplete.
+6. Changes save automatically; if a dot appears next to the view name, choose
+   **Save changes** in the View options menu.
+
+The Roadmap layout needs dates: click **Date fields** (top right) and set
+**Target date** to `Target`. Items without a Target date appear under
+"No date" until populated.
+
 ### Built-in workflows (one-time UI setup)
 
 - **Auto-add to project:** all items in this repository.
