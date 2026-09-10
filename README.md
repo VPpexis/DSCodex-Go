@@ -5,7 +5,7 @@ router that puts **DeepSeek V4 Flash / Pro** into the Codex and ChatGPT desktop
 model picker while **GPT models keep working** through ChatGPT OAuth.
 
 > **Status: P0 — scaffold.** The port is not usable yet. Track progress in the
-> [project board](https://github.com/users/VPpexis/projects) and
+> [project board](https://github.com/users/VPpexis/projects/2) and
 > `docs/04-implementation-plan.md`.
 
 ## Why a Go port

@@ -54,12 +54,30 @@ function Invoke-Gh {
 
 function Invoke-GraphQL {
     param([string]$Query)
-    $previous = $ErrorActionPreference
+    # Read the query from stdin: Windows PowerShell 5.1 strips embedded double
+    # quotes from native command arguments, which corrupts GraphQL passed via
+    # -f query=... The stdin encoding must be UTF-8 without a BOM.
+    $previousPreference = $ErrorActionPreference
+    $previousEncoding = $OutputEncoding
     $ErrorActionPreference = 'Continue'
-    $raw = & gh api graphql -f "query=$Query" 2>&1
+    $OutputEncoding = New-Object System.Text.UTF8Encoding($false)
+    $raw = $Query | & gh api graphql -F query=@- 2>&1
     $code = $LASTEXITCODE
-    $ErrorActionPreference = $previous
+    $OutputEncoding = $previousEncoding
+    $ErrorActionPreference = $previousPreference
     return [pscustomobject]@{ Code = $code; Raw = ($raw -join "`n") }
+}
+
+function Test-GraphQLErrors {
+    param([string]$Raw)
+    try {
+        $json = $Raw | ConvertFrom-Json
+    } catch {
+        return $true
+    }
+    if ($json.PSObject.Properties.Name -notcontains 'errors') { return $false }
+    if ($null -eq $json.errors) { return $false }
+    return @($json.errors).Count -gt 0
 }
 
 function Get-GraphQLRemaining {
@@ -225,8 +243,8 @@ while ($index -lt $total) {
             Wait-ForGraphQLReset
             continue
         }
-        if ($result.Raw -match '"errors"') {
-            Write-Warning "Batch starting at index $index returned GraphQL errors"
+        if (Test-GraphQLErrors -Raw $result.Raw) {
+            Write-Warning "Batch starting at index $index returned GraphQL errors: $(($result.Raw -replace '\s+', ' ').Substring(0, [math]::Min(300, $result.Raw.Length)))"
         }
         break
     }

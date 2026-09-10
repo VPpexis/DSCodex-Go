@@ -6,7 +6,8 @@ The backlog is defined as code in `scripts/project/issues.json` and applied by
 
 ## Project
 
-**Title:** `DSCodex-Go Port Tracker`
+**Title:** `DSCodex-Go Port Tracker` —
+<https://github.com/users/VPpexis/projects/2>
 
 ### Custom fields
 
@@ -90,6 +91,15 @@ powershell -ExecutionPolicy Bypass -File scripts/project/bootstrap.ps1
 The script creates or updates labels, milestones, epics, and task issues from
 `scripts/project/issues.json`, links sub-issues, creates the Project, ensures
 fields, and sets field values. It prints the remaining manual UI steps.
+
+Field values are written by `scripts/project/sync-fields.ps1`, which
+`bootstrap.ps1` invokes. It batches GraphQL mutations and waits for the hourly
+reset when GitHub's 5,000-point GraphQL budget is exhausted, so a run can take
+up to an hour if the budget is already spent. Re-run it any time to re-sync:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/project/sync-fields.ps1
+```
 
 To change the backlog, edit `issues.json` and re-run the script.
 
