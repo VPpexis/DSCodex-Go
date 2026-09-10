@@ -1,7 +1,6 @@
 BINARY  := dscodex
 VERSION ?= dev
 LDFLAGS := -s -w -X main.version=$(VERSION)
-GOLANGCI_LINT ?= golangci-lint
 GITLEAKS ?= gitleaks
 
 .PHONY: all build test fmt vet lint tidy clean cross hooks secrets
@@ -21,7 +20,7 @@ vet:
 	go vet ./...
 
 lint:
-	$(GOLANGCI_LINT) run ./...
+	golangci-lint run ./...
 
 tidy:
 	go mod tidy
