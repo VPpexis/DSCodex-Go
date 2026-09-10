@@ -1,0 +1,32 @@
+name: Bug
+description: Something does not match the upstream behavior or is broken
+title: "[bug] <summary>"
+labels: ["type/bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: Reference the upstream DSCodex behavior where relevant.
+    validations:
+      required: true
+  - type: input
+    id: upstream
+    attributes:
+      label: Upstream reference
+      placeholder: src/proxy.mjs — buildDeepSeekBody
+    validations:
+      required: false
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options: [All, macOS, Linux, Windows]
+    validations:
+      required: true

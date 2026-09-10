@@ -1,0 +1,28 @@
+name: Phase Epic
+description: A phase (P0-P8) of the DSCodex-Go port. Task issues link to it as sub-issues.
+title: "P<N> — <phase name>"
+labels: ["type/epic"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Epics are created by `scripts/project/bootstrap.ps1` from
+        `scripts/project/issues.json`. Use this template only for new phases.
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: What this phase delivers.
+    validations:
+      required: true
+  - type: textarea
+    id: gate
+    attributes:
+      label: Phase gate (acceptance criteria)
+      description: Copied from docs/04-implementation-plan.md.
+      value: |
+        - [ ] All sub-issues closed
+        - [ ] `gofmt`, `go vet`, `go test -race ./...` green on all three OSes
+        - [ ] Docs updated
+    validations:
+      required: true

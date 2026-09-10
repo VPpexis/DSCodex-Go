@@ -1,0 +1,10 @@
+DSCodex-Go
+Copyright (c) 2026 Van Philip Panugan
+
+This project is a Go port of DSCodex v1.1.0
+(https://github.com/fish2lab/DSCodex), Copyright (c) 2026 fish2lab,
+licensed under the MIT License.
+
+Portions of the design, behavior, protocol handling, and documentation are
+derived from the original DSCodex source code. The original MIT license and
+copyright notice are preserved in the LICENSE file.

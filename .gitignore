@@ -1,0 +1,12 @@
+/bin/
+/dist/
+/dscodex
+/dscodex.exe
+*.test
+*.out
+coverage.*
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+scripts/project/.state.json

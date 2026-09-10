@@ -1,0 +1,36 @@
+name: Task
+description: A tracked unit of port work
+title: "[P<N>] <task>"
+labels: ["type/feature"]
+body:
+  - type: input
+    id: upstream
+    attributes:
+      label: Upstream reference
+      description: Node file and function(s) this task ports, if any.
+      placeholder: src/proxy.mjs — normalizeToolCallReplay
+    validations:
+      required: false
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      value: |
+        - [ ] Behavior matches upstream
+        - [ ] Tests added/updated
+        - [ ] Docs updated
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options: [All, macOS, Linux, Windows]
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+    validations:
+      required: false

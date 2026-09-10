@@ -1,0 +1,1003 @@
+{
+  "project": {
+    "title": "DSCodex-Go Port Tracker",
+    "fields": {
+      "Phase": [
+        "P0 Scaffold",
+        "P1 Foundation",
+        "P2 Router Core",
+        "P3 Vision & Compaction",
+        "P4 CLI & Lifecycle",
+        "P5 Autostart & Supervisor",
+        "P6 Bridge",
+        "P7 Parity & Differential",
+        "P8 Release"
+      ],
+      "Area": [
+        "Router",
+        "Vision",
+        "Compaction",
+        "CLI",
+        "Config",
+        "Catalog",
+        "Keystore",
+        "Proxy",
+        "Autostart",
+        "Bridge",
+        "Docs",
+        "CI/Release",
+        "Testing"
+      ],
+      "Platform": ["All", "macOS", "Linux", "Windows"],
+      "Priority": ["Critical", "High", "Medium", "Low"],
+      "Size": ["XS", "S", "M", "L", "XL"]
+    },
+    "numberFields": ["Est. days"],
+    "dateFields": ["Target"]
+  },
+  "labels": [
+    { "name": "type/epic", "color": "6f42c1", "description": "Phase epic" },
+    { "name": "type/feature", "color": "0e8a16", "description": "Feature implementation" },
+    { "name": "type/test", "color": "1d76db", "description": "Testing and verification" },
+    { "name": "type/docs", "color": "0075ca", "description": "Documentation" },
+    { "name": "type/chore", "color": "cfd3d7", "description": "Tooling and maintenance" },
+    { "name": "type/bug", "color": "d73a4a", "description": "Something is broken" },
+    { "name": "upstream-sync", "color": "fbca04", "description": "Tracked against upstream DSCodex changes" },
+    { "name": "phase/0-scaffold", "color": "c5def5", "description": "P0 — Scaffold & Tracking" },
+    { "name": "phase/1-foundation", "color": "bfd4f2", "description": "P1 — Foundation" },
+    { "name": "phase/2-router-core", "color": "bfdadc", "description": "P2 — Router Core" },
+    { "name": "phase/3-vision-compaction", "color": "c2e0c6", "description": "P3 — Vision & Compaction" },
+    { "name": "phase/4-cli-lifecycle", "color": "d4c5f9", "description": "P4 — CLI & Lifecycle" },
+    { "name": "phase/5-autostart-supervisor", "color": "f9d0c4", "description": "P5 — Autostart & Supervisor" },
+    { "name": "phase/6-bridge", "color": "fef2c0", "description": "P6 — App-Server Bridge" },
+    { "name": "phase/7-parity", "color": "fad8c7", "description": "P7 — Parity & Differential" },
+    { "name": "phase/8-release", "color": "ededed", "description": "P8 — Release" }
+  ],
+  "milestones": [
+    { "title": "v0.1.0 — Foundation", "description": "P0 scaffold and P1 foundation" },
+    { "title": "v0.2.0 — Router Core", "description": "P2 router and P3 vision/compaction" },
+    { "title": "v0.5.0 — CLI & Platform", "description": "P4 CLI lifecycle and P5 autostart/supervisor" },
+    { "title": "v0.9.0 — Bridge & Parity", "description": "P6 bridge and P7 differential parity" },
+    { "title": "v1.0.0 — Parity Release", "description": "P8 release" }
+  ],
+  "epics": [
+    {
+      "key": "P0",
+      "title": "P0 — Scaffold & Tracking",
+      "phase": "P0 Scaffold",
+      "label": "phase/0-scaffold",
+      "milestone": "v0.1.0 — Foundation",
+      "area": "CI/Release",
+      "platform": "All",
+      "priority": "Critical",
+      "size": "M",
+      "est_days": 1,
+      "body": "## Goal\nStand up the repository: Go module, layout, legal docs, CI, documentation skeleton, and GitHub Project tracking.\n\n## Gate\n- [ ] `go build ./...`, `go vet ./...`, `go test -race ./...` green locally\n- [ ] CI green on ubuntu/macos/windows\n- [ ] GitHub Project populated with all P0–P8 epics and tasks\n- [ ] Docs 00–04 and 11 committed",
+      "tasks": [
+        {
+          "key": "P0.1",
+          "title": "P0.1 — Initialize Go module and repository layout",
+          "type": "chore",
+          "area": "CI/Release",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nCreate `go.mod` (`github.com/VPpexis/dscodex-go`, go 1.21), the `cmd/dscodex` entry stub, `internal/` package directories, `Makefile`, and `.gitignore`.\n\n## Upstream reference\n`package.json` (module metadata).\n\n## Acceptance criteria\n- [ ] `go build ./...` succeeds\n- [ ] `make build`, `make test`, `make cross` targets defined\n- [ ] No generated binaries committed"
+        },
+        {
+          "key": "P0.2",
+          "title": "P0.2 — Legal and agent docs (LICENSE, NOTICE, README, AGENTS.md)",
+          "type": "docs",
+          "area": "Docs",
+          "platform": "All",
+          "priority": "High",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nPreserve upstream MIT attribution and document how agents work in this repo.\n\n## Upstream reference\n`LICENSE`, `AGENTS.md`, `README.md`.\n\n## Acceptance criteria\n- [ ] LICENSE retains the fish2lab copyright and adds the port copyright\n- [ ] NOTICE credits DSCodex v1.1.0\n- [ ] AGENTS.md lists build/test commands and the non-negotiable behavior contracts"
+        },
+        {
+          "key": "P0.3",
+          "title": "P0.3 — Documentation skeleton (00–04, 11)",
+          "type": "docs",
+          "area": "Docs",
+          "platform": "All",
+          "priority": "High",
+          "size": "M",
+          "est_days": 0.25,
+          "body": "## Goal\nCreate the `docs/` directory with overview, architecture, port mapping, parity matrix, implementation plan, and project-tracking documents.\n\n## Acceptance criteria\n- [ ] `docs/00-overview.md`, `01-architecture.md`, `02-port-mapping.md`, `03-parity-matrix.md`, `04-implementation-plan.md`, `11-project-tracking.md` exist\n- [ ] README links to the docs"
+        },
+        {
+          "key": "P0.4",
+          "title": "P0.4 — CI matrix workflow (gofmt, vet, race tests)",
+          "type": "chore",
+          "area": "CI/Release",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nGitHub Actions CI running on ubuntu, macos, and windows with Go 1.21 and stable.\n\n## Acceptance criteria\n- [ ] `.github/workflows/ci.yml` runs `gofmt` check, `go vet ./...`, `go test -race ./...`\n- [ ] Matrix covers all three OSes\n- [ ] Workflow green on the initial commit"
+        },
+        {
+          "key": "P0.5",
+          "title": "P0.5 — Backlog as code and project bootstrap script",
+          "type": "chore",
+          "area": "CI/Release",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "M",
+          "est_days": 0.25,
+          "body": "## Goal\nDefine every epic and task in `scripts/project/issues.json` and apply it with an idempotent `scripts/project/bootstrap.ps1`.\n\n## Acceptance criteria\n- [ ] `issues.json` covers P0–P8 with fields and acceptance criteria\n- [ ] Script creates labels, milestones, epics, tasks, sub-issue links\n- [ ] Re-running the script is safe (no duplicate issues)"
+        },
+        {
+          "key": "P0.6",
+          "title": "P0.6 — GitHub Project v2 setup (fields, items, views checklist)",
+          "type": "chore",
+          "area": "CI/Release",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nCreate the `DSCodex-Go Port Tracker` project, ensure custom fields, add all issues, and set field values. Document the one-time UI steps for views and workflows.\n\n## Acceptance criteria\n- [ ] Project exists and is linked to the repository\n- [ ] Fields: Phase, Area, Platform, Priority, Size, Est. days, Target\n- [ ] All issues are project items with field values set\n- [ ] `docs/11-project-tracking.md` documents views and workflows"
+        },
+        {
+          "key": "P0.7",
+          "title": "P0.7 — Issue and PR templates",
+          "type": "chore",
+          "area": "CI/Release",
+          "platform": "All",
+          "priority": "Medium",
+          "size": "XS",
+          "est_days": 0.1,
+          "body": "## Goal\nAdd issue forms (epic, task, bug) and a PR template with tracking and platform checklists.\n\n## Acceptance criteria\n- [ ] `.github/ISSUE_TEMPLATE/` contains epic, task, bug, and config forms\n- [ ] `.github/PULL_REQUEST_TEMPLATE.md` includes `Closes #N` and verification checklist"
+        }
+      ]
+    },
+    {
+      "key": "P1",
+      "title": "P1 — Foundation",
+      "phase": "P1 Foundation",
+      "label": "phase/1-foundation",
+      "milestone": "v0.1.0 — Foundation",
+      "area": "Config",
+      "platform": "All",
+      "priority": "Critical",
+      "size": "L",
+      "est_days": 2,
+      "body": "## Goal\nPort the storage and configuration foundation: constants, keystore, config.toml managed block, catalog, and proxy resolution — with unit tests green on all three OSes.\n\n## Gate\n- [ ] `keys`, `config`, `platform`, `proxy-config` suites ported and green\n- [ ] Catalog golden fixtures pass\n- [ ] DPAPI round-trip verified on Windows CI\n- [ ] `go test -race ./...` clean",
+      "tasks": [
+        {
+          "key": "P1.1",
+          "title": "P1.1 — constants: models, paths, platform helpers",
+          "type": "feature",
+          "area": "Config",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nPort `constants.mjs`: model table, host/port, `resolveCodexHome`, `pathsFor`, `needsShellSpawn`, version.\n\n## Upstream reference\n`src/constants.mjs`.\n\n## Acceptance criteria\n- [ ] Picker slugs and wire models match exactly\n- [ ] Paths identical to upstream\n- [ ] Unit tests cover `CODEX_HOME` override and Windows shell spawn"
+        },
+        {
+          "key": "P1.2",
+          "title": "P1.2 — keystore: config.json read/write, atomic writes, modes",
+          "type": "feature",
+          "area": "Keystore",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nPort the router config file store: strict/non-strict reads, atomic writes, 0600 mode, empty-file deletion, redaction-safe error messages.\n\n## Upstream reference\n`src/keys.mjs` — `readRouterConfig`, `writeRouterConfig`.\n\n## Acceptance criteria\n- [ ] Corrupt JSON never leaks fragments in errors\n- [ ] Temp-file + rename atomic writes\n- [ ] Tests use `t.TempDir()`"
+        },
+        {
+          "key": "P1.3",
+          "title": "P1.3 — keystore: DPAPI protect/unprotect on Windows",
+          "type": "feature",
+          "area": "Keystore",
+          "platform": "Windows",
+          "priority": "Critical",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nImplement DPAPI (CurrentUser scope) protect/unprotect for the stored key and proxy URL, replacing the upstream PowerShell call-out.\n\n## Upstream reference\n`src/keys.mjs` — `runDpapi`, `dpapiProtect`, `dpapiUnprotect`.\n\n## Acceptance criteria\n- [ ] Round-trip test on Windows CI\n- [ ] `key_encoding`/`proxy_encoding` semantics match (`dpapi` vs `plain`)\n- [ ] Non-Windows builds compile without the Windows files"
+        },
+        {
+          "key": "P1.4",
+          "title": "P1.4 — keystore: router token lifecycle and legacy migration",
+          "type": "feature",
+          "area": "Keystore",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nPort `createRouterToken`, `readRouterToken`, `writeRouterToken`, `ensureRouterToken`, and the legacy plaintext Windows key migration.\n\n## Upstream reference\n`src/keys.mjs`.\n\n## Acceptance criteria\n- [ ] Token regex `^[A-Za-z0-9_-]{43}$` enforced on read and write\n- [ ] `ensureRouterToken` prefers the config.toml-derived token\n- [ ] Legacy migration test on Windows"
+        },
+        {
+          "key": "P1.5",
+          "title": "P1.5 — codexconfig: managed block read/match/rewrite",
+          "type": "feature",
+          "area": "Config",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nPort the marker-managed root block: detection, value parsing, token extraction from the URL, match check, and rewrite — preserving the rest of the file line-for-line.\n\n## Upstream reference\n`src/config.mjs` — `managedRootBlock`, `readManagedRouterToken`, `managedRouterConfigMatches`, `rewriteManagedRouterConfig`.\n\n## Acceptance criteria\n- [ ] CRLF normalized exactly like upstream\n- [ ] Only marker-owned root keys are rewritten\n- [ ] Golden tests cover messy real-world configs"
+        },
+        {
+          "key": "P1.6",
+          "title": "P1.6 — codexconfig: install/uninstall transforms and desktop reasoning",
+          "type": "feature",
+          "area": "Config",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nPort `buildInstalledConfig` (strip, conflict check, root injection, `[desktop].enabled-reasoning-efforts`) and `uninstall` behavior.\n\n## Upstream reference\n`src/config.mjs` — `stripManagedConfig`, `assertNoRootConflict`, `injectRoot`, `injectDesktopReasoning`, `install`, `uninstall`.\n\n## Acceptance criteria\n- [ ] User-owned root keys are never replaced\n- [ ] Existing `[desktop]` effort list without `max` errors instead of overwriting\n- [ ] Backup file written once before the first install"
+        },
+        {
+          "key": "P1.7",
+          "title": "P1.7 — codexconfig: bridge CODEX_CLI_PATH stripping",
+          "type": "feature",
+          "area": "Config",
+          "platform": "All",
+          "priority": "Medium",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nPort `stripBridgeCliPath` so DSCodex-owned `CODEX_CLI_PATH` values in `[mcp_servers.*.env]` are removed without touching user-owned values.\n\n## Upstream reference\n`src/config.mjs`.\n\n## Acceptance criteria\n- [ ] Only owned values removed\n- [ ] File not rewritten when nothing changes"
+        },
+        {
+          "key": "P1.8",
+          "title": "P1.8 — catalog: entry build, backfill, identity replacement",
+          "type": "feature",
+          "area": "Catalog",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nPort `buildDeepSeekCatalogEntry` and `backfillNativeEntry`: clone from the `gpt-5.6-sol` template, pin DeepSeek fields, replace GPT identity strings, and delete speed-tier fields.\n\n## Upstream reference\n`src/catalog.mjs`.\n\n## Acceptance criteria\n- [ ] All pinned fields match upstream exactly\n- [ ] Native entries backfilled with required defaults\n- [ ] Golden fixture from upstream output matches structurally"
+        },
+        {
+          "key": "P1.9",
+          "title": "P1.9 — catalog: atomic write and sync",
+          "type": "feature",
+          "area": "Catalog",
+          "platform": "All",
+          "priority": "High",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nPort `writeCatalog` and `syncCatalog` with temp-file + rename and 0600 mode.\n\n## Upstream reference\n`src/catalog.mjs`.\n\n## Acceptance criteria\n- [ ] Missing cache produces the upstream error message\n- [ ] Write is atomic"
+        },
+        {
+          "key": "P1.10",
+          "title": "P1.10 — proxycfg: resolution order, validation, redaction, NO_PROXY",
+          "type": "feature",
+          "area": "Proxy",
+          "platform": "All",
+          "priority": "High",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nPort proxy resolution (DSCODEX_* first, then standard lowercase-first env, then stored), URL validation, credential redaction, and `NO_PROXY` merging (loopback + api.deepseek.com).\n\n## Upstream reference\n`src/proxy-config.mjs`.\n\n## Acceptance criteria\n- [ ] Resolution order matches upstream\n- [ ] Redaction hides userinfo, query, and fragment\n- [ ] `NO_PROXY` merge is case-insensitive and deduplicated"
+        },
+        {
+          "key": "P1.11",
+          "title": "P1.11 — Port P1 unit suites and golden fixtures",
+          "type": "test",
+          "area": "Testing",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "L",
+          "est_days": 1,
+          "body": "## Goal\nPort `keys.test.mjs`, `config.test.mjs`, `platform.test.mjs`, `proxy-config.test.mjs` 1:1 where practical, plus catalog golden tests from upstream output.\n\n## Acceptance criteria\n- [ ] Same cases and names as upstream where practical\n- [ ] `t.TempDir()` for filesystem tests; real `~/.codex` never touched\n- [ ] Green on Windows, macOS, Linux CI"
+        }
+      ]
+    },
+    {
+      "key": "P2",
+      "title": "P2 — Router Core",
+      "phase": "P2 Router Core",
+      "label": "phase/2-router-core",
+      "milestone": "v0.2.0 — Router Core",
+      "area": "Router",
+      "platform": "All",
+      "priority": "Critical",
+      "size": "XL",
+      "est_days": 4,
+      "body": "## Goal\nPort the HTTP/SSE router: auth, limits, decoding, header filtering, DeepSeek body transforms, tool replay repair, passthrough, streaming, and shutdown.\n\n## Gate\n- [ ] `proxy.test.mjs` parity suite green\n- [ ] Streaming, cancel, and limit tests green\n- [ ] `go test -race ./...` clean",
+      "tasks": [
+        {
+          "key": "P2.1",
+          "title": "P2.1 — HTTP server core: timeouts, upgrade 426, limits",
+          "type": "feature",
+          "area": "Router",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nServer construction with keep-alive 120 s, headers timeout 125 s, `Upgrade` → 426, and 64 MiB/128 MiB byte caps with 413 responses.\n\n## Upstream reference\n`src/proxy.mjs` — `createProxyServer`, `readRequestBody`.\n\n## Acceptance criteria\n- [ ] Upgrade requests receive 426 without killing the server\n- [ ] Oversized bodies return 413 and the connection is drained\n- [ ] Timeouts match upstream"
+        },
+        {
+          "key": "P2.2",
+          "title": "P2.2 — Path token auth and control endpoints",
+          "type": "feature",
+          "area": "Router",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nConstant-time path token comparison, 404 for misses, `/health`, `/models`, `/v1/models`, and 405 for non-POST API paths.\n\n## Upstream reference\n`src/proxy.mjs` — `authorizedPath`, `tokenMatches`.\n\n## Acceptance criteria\n- [ ] Token compared with constant-time equality\n- [ ] Health includes `deepseek_key` and `instance_id`\n- [ ] No token → 404 with a generic message"
+        },
+        {
+          "key": "P2.3",
+          "title": "P2.3 — Request body read and content-encoding decode",
+          "type": "feature",
+          "area": "Router",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nRead request bodies with limits and decode gzip, deflate (zlib), brotli, and zstd, including decoded-size enforcement.\n\n## Upstream reference\n`src/proxy.mjs` — `decodeBody`, `readRequestBody`.\n\n## Acceptance criteria\n- [ ] All four encodings decode correctly\n- [ ] Decompressed cap enforced\n- [ ] Unknown encodings produce an error response, not a panic"
+        },
+        {
+          "key": "P2.4",
+          "title": "P2.4 — Upstream client: proxy transport, manual redirects, abort on disconnect",
+          "type": "feature",
+          "area": "Router",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nHTTP client with `Transport.Proxy` honoring the resolved proxy, redirects disabled, and context cancellation when the client disconnects.\n\n## Upstream reference\n`src/proxy.mjs` — fetch call with `redirect: \"manual\"` and `AbortController`.\n\n## Acceptance criteria\n- [ ] Redirects are not followed\n- [ ] Client disconnect aborts the upstream request\n- [ ] Loopback and api.deepseek.com bypass the proxy"
+        },
+        {
+          "key": "P2.5",
+          "title": "P2.5 — Response header filtering and SSE streaming",
+          "type": "feature",
+          "area": "Router",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nForward response headers minus hop-by-hop, stream the body with per-chunk flush, and log early upstream stream termination.\n\n## Upstream reference\n`src/proxy.mjs` — `copyResponseHeaders`, stream pipe.\n\n## Acceptance criteria\n- [ ] SSE events reach the client without buffering delays\n- [ ] Hop-by-hop headers stripped\n- [ ] Upstream stream errors destroy the client response"
+        },
+        {
+          "key": "P2.6",
+          "title": "P2.6 — Authenticated shutdown endpoint",
+          "type": "feature",
+          "area": "Router",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\n`POST /<token>/_dscodex/shutdown` with the `x-dscodex-shutdown-token` header, 202 on success, 401 otherwise, invoking the shutdown callback asynchronously.\n\n## Upstream reference\n`src/proxy.mjs`.\n\n## Acceptance criteria\n- [ ] Wrong or missing shutdown token → 401\n- [ ] Callback runs after the response is sent\n- [ ] No PID is ever signalled directly"
+        },
+        {
+          "key": "P2.7",
+          "title": "P2.7 — DeepSeek body transform",
+          "type": "feature",
+          "area": "Router",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nPort `buildDeepSeekBody`: model rewrite, effort clamp, `store=false`, `parallel_tool_calls=false`, and deletion of unsupported fields.\n\n## Upstream reference\n`src/proxy.mjs`.\n\n## Acceptance criteria\n- [ ] Effort clamp exact (`low|medium|high` → `high`, else `max`)\n- [ ] All stripped keys verified by tests\n- [ ] `json.Number` used to avoid float precision loss"
+        },
+        {
+          "key": "P2.8",
+          "title": "P2.8 — Compaction item conversion in input",
+          "type": "feature",
+          "area": "Compaction",
+          "platform": "All",
+          "priority": "High",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nPort `convertInputItem`: decrypt DSCodex-sealed compaction items into assistant summary messages; drop undecryptable items; strip local `id` fields; map `agent_message` to `message`.\n\n## Upstream reference\n`src/proxy.mjs`.\n\n## Acceptance criteria\n- [ ] Foreign compaction items dropped, never forwarded\n- [ ] Decrypted summary wrapped as `[Compacted prior context]`"
+        },
+        {
+          "key": "P2.9",
+          "title": "P2.9 — Tool call replay repair (pairing on call_id)",
+          "type": "feature",
+          "area": "Router",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "L",
+          "est_days": 1,
+          "body": "## Goal\nPort `normalizeToolCallReplay`: move each tool output directly after its call for `function_call`, `custom_tool_call`, and `local_shell_call`, preserving the relative order of all other items and leaving orphan calls in place.\n\n## Upstream reference\n`src/proxy.mjs`.\n\n## Acceptance criteria\n- [ ] Pairing key is `call_id`, never `id`\n- [ ] Developer messages inside a pair are moved out\n- [ ] Tests cover interleaved and missing outputs"
+        },
+        {
+          "key": "P2.10",
+          "title": "P2.10 — Reasoning cloning for extra calls within a turn",
+          "type": "feature",
+          "area": "Router",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nPort `reasoningForExtraCalls`: a turn runs from its `reasoning` item through assistant messages and calls, ending at a tool output; every extra call gets a deep copy of the turn's reasoning, never across turn boundaries.\n\n## Upstream reference\n`src/proxy.mjs`.\n\n## Acceptance criteria\n- [ ] First call in a turn is not cloned\n- [ ] A turn without its own reasoning inherits nothing\n- [ ] Deep copy, not shared reference"
+        },
+        {
+          "key": "P2.11",
+          "title": "P2.11 — Port proxy suite against httptest fakes",
+          "type": "test",
+          "area": "Testing",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "L",
+          "est_days": 1,
+          "body": "## Goal\nPort `proxy.test.mjs` cases: routing, auth, header allow-lists, body transforms, passthrough, compaction conversion, and limits.\n\n## Acceptance criteria\n- [ ] Upstream fakes replaced with `net/http/httptest`\n- [ ] Same case names as upstream where practical\n- [ ] Green on all three OSes"
+        },
+        {
+          "key": "P2.12",
+          "title": "P2.12 — Streaming, cancellation, and limit stress tests",
+          "type": "test",
+          "area": "Testing",
+          "platform": "All",
+          "priority": "High",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nExercise SSE chunk flushing, client disconnect aborting upstream, slow streams, and oversized/decompression-bomb bodies.\n\n## Acceptance criteria\n- [ ] Disconnect test asserts upstream cancellation\n- [ ] Decoded-size cap test\n- [ ] Race detector clean"
+        }
+      ]
+    },
+    {
+      "key": "P3",
+      "title": "P3 — Vision & Compaction",
+      "phase": "P3 Vision & Compaction",
+      "label": "phase/3-vision-compaction",
+      "milestone": "v0.2.0 — Router Core",
+      "area": "Vision",
+      "platform": "All",
+      "priority": "High",
+      "size": "L",
+      "est_days": 2,
+      "body": "## Goal\nPort the GPT vision pipeline and the encrypted compaction handoff, including the synthetic compaction stream.\n\n## Gate\n- [ ] `vision.test.mjs` parity suite green\n- [ ] Seal/open round-trip and trigger-flow tests green\n- [ ] No plaintext compaction summary ever leaves the router",
+      "tasks": [
+        {
+          "key": "P3.1",
+          "title": "P3.1 — Vision describer with cache and timeout",
+          "type": "feature",
+          "area": "Vision",
+          "platform": "All",
+          "priority": "High",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nPort `createVisionDescriber`: OAuth identity headers only, `gpt-5.6-sol` default, sha256 LRU (200), 60 s timeout, SSE parsing, empty-description caching.\n\n## Upstream reference\n`src/vision.mjs`.\n\n## Acceptance criteria\n- [ ] `DSCODEX_VISION_MODEL` override honored\n- [ ] Failures cached as empty strings\n- [ ] Concurrent describes per request"
+        },
+        {
+          "key": "P3.2",
+          "title": "P3.2 — Image rewrite integration in the router",
+          "type": "feature",
+          "area": "Vision",
+          "platform": "All",
+          "priority": "High",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nPort `rewriteImages`: replace `input_image` parts in message content and `function_call_output.output` with GPT text; no-op without `authorization`.\n\n## Upstream reference\n`src/vision.mjs`, `src/proxy.mjs`.\n\n## Acceptance criteria\n- [ ] Fallback placeholder text matches upstream\n- [ ] Body untouched when no OAuth header\n- [ ] Unique images described once per request"
+        },
+        {
+          "key": "P3.3",
+          "title": "P3.3 — Compaction seal/open (AES-256-GCM)",
+          "type": "feature",
+          "area": "Compaction",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nPort `sealCompaction`/`openCompaction`: `dscodex-compaction-v1:` prefix, SHA-256(router token) key, `iv(12)|tag(16)|ciphertext` base64url layout.\n\n## Upstream reference\n`src/proxy.mjs`.\n\n## Acceptance criteria\n- [ ] Byte-compatible round-trip with upstream seals (differential fixture)\n- [ ] Tampered or foreign ciphertext returns null\n- [ ] Minimum length check enforced"
+        },
+        {
+          "key": "P3.4",
+          "title": "P3.4 — Compaction trigger flow and synthetic stream",
+          "type": "feature",
+          "area": "Compaction",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nPort `isCompactionRequest`, `buildDeepSeekCompactionBody`, and `sendCompactionStream`: strip tools and trigger, append the fixed summary prompt, emit exactly one `compaction` item plus `response.completed`.\n\n## Upstream reference\n`src/proxy.mjs`.\n\n## Acceptance criteria\n- [ ] Exactly one synthetic item before completion\n- [ ] Usage normalized like upstream\n- [ ] Non-compaction DeepSeek requests unaffected"
+        },
+        {
+          "key": "P3.5",
+          "title": "P3.5 — Upstream compaction SSE parsing",
+          "type": "feature",
+          "area": "Compaction",
+          "platform": "All",
+          "priority": "High",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nPort `parseCompactionUpstream` and `textFromMessage`: prefer completed output, then item-done, output-text-done, and delta fallbacks; capture usage.\n\n## Upstream reference\n`src/proxy.mjs`.\n\n## Acceptance criteria\n- [ ] All four fallbacks covered by tests\n- [ ] `[DONE]` and keep-alives ignored\n- [ ] Empty summary produces the upstream error"
+        },
+        {
+          "key": "P3.6",
+          "title": "P3.6 — Vision and compaction tests with fake upstream",
+          "type": "test",
+          "area": "Testing",
+          "platform": "All",
+          "priority": "High",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nPort `vision.test.mjs` and add fake-upstream end-to-end tests for the compaction trigger flow.\n\n## Acceptance criteria\n- [ ] Cache, timeout, and no-OAuth cases covered\n- [ ] Trigger flow asserted end-to-end over HTTP\n- [ ] Green on all three OSes"
+        }
+      ]
+    },
+    {
+      "key": "P4",
+      "title": "P4 — CLI & Lifecycle",
+      "phase": "P4 CLI & Lifecycle",
+      "label": "phase/4-cli-lifecycle",
+      "milestone": "v0.5.0 — CLI & Platform",
+      "area": "CLI",
+      "platform": "All",
+      "priority": "High",
+      "size": "L",
+      "est_days": 2.5,
+      "body": "## Goal\nImplement every CLI command with upstream-compatible output, exit codes, and the PID-state trust model.\n\n## Gate\n- [ ] All commands implemented and covered by tests\n- [ ] Manual Windows acceptance: install → start → doctor → stop\n- [ ] Key never printed; proxy credentials redacted",
+      "tasks": [
+        {
+          "key": "P4.1",
+          "title": "P4.1 — CLI dispatch, usage, version, exit codes",
+          "type": "feature",
+          "area": "CLI",
+          "platform": "All",
+          "priority": "High",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nstdlib `flag`-based dispatch with subcommands, `--port`/`DSCODEX_PORT`, usage text, `version`, and upstream-compatible exit codes.\n\n## Upstream reference\n`src/cli.mjs` — `main`, `usage`, `parsePort`.\n\n## Acceptance criteria\n- [ ] Unknown command → error + exit 1\n- [ ] Help lists every command\n- [ ] Version wired to ldflags"
+        },
+        {
+          "key": "P4.2",
+          "title": "P4.2 — install, sync, uninstall commands",
+          "type": "feature",
+          "area": "CLI",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nWire `install` (catalog + managed config + token), `sync` (catalog refresh), and `uninstall` (autostart off, stop, strip config, delete owned files).\n\n## Upstream reference\n`src/cli.mjs`.\n\n## Acceptance criteria\n- [ ] Install refuses to run over legacy untrusted pid state\n- [ ] Uninstall removes only DSCodex-owned state\n- [ ] Output messages match upstream intent"
+        },
+        {
+          "key": "P4.3",
+          "title": "P4.3 — key set/status/delete with hidden prompt",
+          "type": "feature",
+          "area": "CLI",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nKey commands with `DEEPSEEK_API_KEY` env override, hidden TTY prompt (`x/term`), stored-key resolution, and restart hints when the router is running.\n\n## Upstream reference\n`src/cli.mjs` — `manageKey`, `promptSecret`, `resolveDeepSeekKey`.\n\n## Acceptance criteria\n- [ ] Key value never echoed or logged\n- [ ] Non-TTY without env → clear error\n- [ ] Status reports the source (env/stored/launchctl)"
+        },
+        {
+          "key": "P4.4",
+          "title": "P4.4 — proxy set/status/clear",
+          "type": "feature",
+          "area": "CLI",
+          "platform": "All",
+          "priority": "High",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nProxy commands with validation, redacted output, and stored/env source reporting.\n\n## Upstream reference\n`src/cli.mjs` — `manageProxy`.\n\n## Acceptance criteria\n- [ ] Invalid URL rejected with the upstream message\n- [ ] Credentials redacted in every output path"
+        },
+        {
+          "key": "P4.5",
+          "title": "P4.5 — PID-state trust model and process liveness",
+          "type": "feature",
+          "area": "CLI",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nPort `readPidState`, `writePidState`, `removePidState` (atomic claim/restore), and platform `processAlive` checks.\n\n## Upstream reference\n`src/cli.mjs`.\n\n## Acceptance criteria\n- [ ] Malformed or unauthenticated state refuses to stop anything\n- [ ] Replacement-instance state is never clobbered\n- [ ] Windows liveness check implemented without signals"
+        },
+        {
+          "key": "P4.6",
+          "title": "P4.6 — serve: foreground server with graceful shutdown",
+          "type": "feature",
+          "area": "CLI",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\n`serve` reconciles the managed binding, resolves the key and proxy, owns the pid file, handles SIGINT/SIGTERM, and exits 0 on authenticated shutdown.\n\n## Upstream reference\n`src/cli.mjs` — `serve`.\n\n## Acceptance criteria\n- [ ] Pid file owned regardless of launcher\n- [ ] Graceful close with a 5 s force timer\n- [ ] No proxy re-exec (native Go proxy)"
+        },
+        {
+          "key": "P4.7",
+          "title": "P4.7 — start: detached spawn with health wait",
+          "type": "feature",
+          "area": "CLI",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\n`start` spawns a detached `serve`, redirects logs to `server.log`, waits for health, and reports the pid.\n\n## Upstream reference\n`src/cli.mjs` — `start`.\n\n## Acceptance criteria\n- [ ] Already-running detection\n- [ ] Detach semantics correct on Windows and POSIX\n- [ ] Timeout error points at the log file"
+        },
+        {
+          "key": "P4.8",
+          "title": "P4.8 — stop: authenticated shutdown and stale cleanup",
+          "type": "feature",
+          "area": "CLI",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\n`stop` calls the authenticated shutdown endpoint, polls for exit, removes stale pid state, and never signals an unverified process.\n\n## Upstream reference\n`src/cli.mjs` — `stopInstance`.\n\n## Acceptance criteria\n- [ ] Non-202 responses error without killing\n- [ ] Dead pid → stale cleanup\n- [ ] 60 × 100 ms exit poll like upstream"
+        },
+        {
+          "key": "P4.9",
+          "title": "P4.9 — status and doctor (six checks)",
+          "type": "feature",
+          "area": "CLI",
+          "platform": "All",
+          "priority": "High",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nPort `status` and `doctor` with the six checks: config injected, catalog present, router token, proxy running, DeepSeek key in proxy, app-server bridge state.\n\n## Upstream reference\n`src/cli.mjs` — `doctor`.\n\n## Acceptance criteria\n- [ ] Exit 1 when any check fails\n- [ ] Bridge check passes trivially off macOS\n- [ ] Output format `ok`/`missing` per check"
+        },
+        {
+          "key": "P4.10",
+          "title": "P4.10 — CLI command tests",
+          "type": "test",
+          "area": "Testing",
+          "platform": "All",
+          "priority": "High",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nTest command dispatch, pid-state trust rules, doctor checks, and key/proxy handling with fakes.\n\n## Acceptance criteria\n- [ ] No test touches the real `~/.codex`\n- [ ] Trust-model negative cases covered\n- [ ] Green on all three OSes"
+        },
+        {
+          "key": "P4.11",
+          "title": "P4.11 — Windows manual acceptance: install → start → doctor → stop",
+          "type": "test",
+          "area": "Testing",
+          "platform": "Windows",
+          "priority": "Critical",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nRun the full lifecycle on Windows against a real Codex install and record the result.\n\n## Acceptance criteria\n- [ ] `doctor` reports all six checks `ok`\n- [ ] Router stops and stays down\n- [ ] Codex CLI can list the DeepSeek models from the catalog"
+        }
+      ]
+    },
+    {
+      "key": "P5",
+      "title": "P5 — Autostart & Supervisor",
+      "phase": "P5 Autostart & Supervisor",
+      "label": "phase/5-autostart-supervisor",
+      "milestone": "v0.5.0 — CLI & Platform",
+      "area": "Autostart",
+      "platform": "All",
+      "priority": "High",
+      "size": "L",
+      "est_days": 2,
+      "body": "## Goal\nPort autostart artifact builders and registration for launchd, systemd, and Task Scheduler, plus the Windows supervisor loop.\n\n## Gate\n- [ ] Builder golden tests green\n- [ ] `autostart enable|disable|status` correct per OS\n- [ ] A graceful stop stays down; crashes restart",
+      "tasks": [
+        {
+          "key": "P5.1",
+          "title": "P5.1 — launchd plist builder",
+          "type": "feature",
+          "area": "Autostart",
+          "platform": "macOS",
+          "priority": "Medium",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nPort `buildLaunchdPlist` with `KeepAlive.SuccessfulExit=false` and log paths.\n\n## Upstream reference\n`src/autostart.mjs`.\n\n## Acceptance criteria\n- [ ] XML escaping matches upstream\n- [ ] No secrets embedded"
+        },
+        {
+          "key": "P5.2",
+          "title": "P5.2 — systemd unit builder",
+          "type": "feature",
+          "area": "Autostart",
+          "platform": "Linux",
+          "priority": "Medium",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nPort `buildSystemdUnit` with `Restart=on-failure` and quoted ExecStart.\n\n## Upstream reference\n`src/autostart.mjs`.\n\n## Acceptance criteria\n- [ ] Quoting handles spaces and quotes\n- [ ] No secrets embedded"
+        },
+        {
+          "key": "P5.3",
+          "title": "P5.3 — Windows VBS and register script builders",
+          "type": "feature",
+          "area": "Autostart",
+          "platform": "Windows",
+          "priority": "High",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nPort `buildWindowsVbs`, `encodeWindowsVbs` (UTF-16LE BOM), and `buildWindowsRegisterScript` (interactive principal, restart 255/1 min, hidden wscript).\n\n## Upstream reference\n`src/autostart.mjs`.\n\n## Acceptance criteria\n- [ ] `%USERPROFILE%` expansion for non-ASCII paths\n- [ ] Task settings match upstream\n- [ ] No secrets embedded"
+        },
+        {
+          "key": "P5.4",
+          "title": "P5.4 — autostart enable/disable/status with rollback",
+          "type": "feature",
+          "area": "Autostart",
+          "platform": "All",
+          "priority": "High",
+          "size": "L",
+          "est_days": 1,
+          "body": "## Goal\nPort registration and rollback semantics: register before replacing a healthy manual router, restore it on failure, and keep `stop` authoritative.\n\n## Upstream reference\n`src/cli.mjs` — `autostartEnable`, `autostartDisable`, `autostartStatus`, `restoreManualRouter`.\n\n## Acceptance criteria\n- [ ] Failed handoff restores the manual router\n- [ ] Status warns when the router runs manually under an inactive task\n- [ ] Disable removes generated artifacts"
+        },
+        {
+          "key": "P5.5",
+          "title": "P5.5 — Supervisor crash-restart loop",
+          "type": "feature",
+          "area": "Autostart",
+          "platform": "All",
+          "priority": "High",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nPort `superviseRouter`: log ownership, 2 s restart delay, exit 0 stays down, spawn failures retried.\n\n## Upstream reference\n`src/supervisor.mjs`.\n\n## Acceptance criteria\n- [ ] Clean exit stops the loop\n- [ ] Nonzero exit restarts\n- [ ] Supervisor log lines timestamped"
+        },
+        {
+          "key": "P5.6",
+          "title": "P5.6 — Autostart builder golden tests",
+          "type": "test",
+          "area": "Testing",
+          "platform": "All",
+          "priority": "Medium",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nPort `autostart.test.mjs` builder cases and supervisor tests.\n\n## Acceptance criteria\n- [ ] Plist/unit/VBS outputs match golden fixtures\n- [ ] Path escaping cases covered\n- [ ] Green on all three OSes"
+        },
+        {
+          "key": "P5.7",
+          "title": "P5.7 — Windows Task Scheduler smoke",
+          "type": "test",
+          "area": "Testing",
+          "platform": "Windows",
+          "priority": "High",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nRegister, run, verify, and remove the scheduled task on Windows.\n\n## Acceptance criteria\n- [ ] Task starts a live supervisor (state Running)\n- [ ] `stop` leaves it down until next logon/run\n- [ ] Disable removes the task and VBS"
+        }
+      ]
+    },
+    {
+      "key": "P6",
+      "title": "P6 — App-Server Bridge",
+      "phase": "P6 Bridge",
+      "label": "phase/6-bridge",
+      "milestone": "v0.9.0 — Bridge & Parity",
+      "area": "Bridge",
+      "platform": "macOS",
+      "priority": "Medium",
+      "size": "L",
+      "est_days": 2,
+      "body": "## Goal\nPort the opt-in macOS app-server bridge: stock Codex resolution, JSONL rewrite, provider/effort memory, and launchctl wiring.\n\n## Gate\n- [ ] State and picker smoke equivalents pass on macOS\n- [ ] Non-macOS platforms unaffected (bridge command reports unavailable)\n- [ ] Non-matching JSONL passes through byte-for-byte",
+      "tasks": [
+        {
+          "key": "P6.1",
+          "title": "P6.1 — Stock Codex resolution chain",
+          "type": "feature",
+          "area": "Bridge",
+          "platform": "macOS",
+          "priority": "Medium",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nPort `resolveRealCodex`: launchctl getenv, env, bundled ChatGPT app binary, PATH; never resolve to the wrapper itself.\n\n## Upstream reference\n`src/real-codex.mjs`.\n\n## Acceptance criteria\n- [ ] Fallback order exact\n- [ ] Unit tests with injected fakes"
+        },
+        {
+          "key": "P6.2",
+          "title": "P6.2 — Wrapper spawn, stdio passthrough, signal forwarding",
+          "type": "feature",
+          "area": "Bridge",
+          "platform": "macOS",
+          "priority": "Medium",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nPort `codex-wrapper.mjs` non-app-server behavior: delete `CODEX_CLI_PATH`, pipe stdio, forward SIGINT/SIGTERM, propagate exit codes.\n\n## Upstream reference\n`src/codex-wrapper.mjs`.\n\n## Acceptance criteria\n- [ ] Child environment cleaned\n- [ ] Exit code/signal propagation correct"
+        },
+        {
+          "key": "P6.3",
+          "title": "P6.3 — App-server JSONL rewrite loop",
+          "type": "feature",
+          "area": "Bridge",
+          "platform": "macOS",
+          "priority": "High",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nRead client/server JSONL lines, rewrite via the state machine, and pass through unparseable or untracked lines unchanged. Handle long lines (no 64 KB scanner limit).\n\n## Upstream reference\n`src/codex-wrapper.mjs`.\n\n## Acceptance criteria\n- [ ] Multi-megabyte lines handled\n- [ ] Invalid JSON passed through unchanged"
+        },
+        {
+          "key": "P6.4",
+          "title": "P6.4 — State machine: load/save/reconcile, thread cap",
+          "type": "feature",
+          "area": "Bridge",
+          "platform": "macOS",
+          "priority": "High",
+          "size": "L",
+          "est_days": 1,
+          "body": "## Goal\nPort `createAppServerState`: versioned state, per-provider effort slots, OpenAI service tier, bounded thread map (500), atomic writes, and `reconcileWithConfig`.\n\n## Upstream reference\n`src/app-server-state.mjs`.\n\n## Acceptance criteria\n- [ ] Effort normalization exact (`high` stays, else `max` for DeepSeek)\n- [ ] Corrupt state falls back to initial state\n- [ ] Reconciliation adopts live config provider/effort/tier"
+        },
+        {
+          "key": "P6.5",
+          "title": "P6.5 — Provider/effort switching and staleEffort",
+          "type": "feature",
+          "area": "Bridge",
+          "platform": "macOS",
+          "priority": "High",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nPort the rewrite handlers: `config/batchWrite`, `config/value/write`, `thread/start`, `thread/resume`, `thread/fork`, `thread/settings/update`, and server-response reconciliation, including `staleEffort`.\n\n## Upstream reference\n`src/app-server-state.mjs`.\n\n## Acceptance criteria\n- [ ] Cross-provider switch restores the saved slot\n- [ ] Model-only write sets `staleEffort`\n- [ ] Threads unseen by the bridge default to the last active provider"
+        },
+        {
+          "key": "P6.6",
+          "title": "P6.6 — Bridge shim and launchctl enable/disable/status",
+          "type": "feature",
+          "area": "Bridge",
+          "platform": "macOS",
+          "priority": "Medium",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nPort shim generation and the `bridge` command: refuse user-owned `CODEX_CLI_PATH`, set `DSCODEX_REAL_CODEX` and `CODEX_CLI_PATH`, and strip owned values on disable.\n\n## Upstream reference\n`src/cli.mjs` — `manageBridge`, `activateBridge`, `deactivateBridge`.\n\n## Acceptance criteria\n- [ ] User-owned CODEX_CLI_PATH refused\n- [ ] Disable clears launchctl values and config snapshots"
+        },
+        {
+          "key": "P6.7",
+          "title": "P6.7 — State and picker smoke equivalents",
+          "type": "test",
+          "area": "Testing",
+          "platform": "macOS",
+          "priority": "High",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nPort `state-smoke.mjs` and `picker-smoke.mjs` to Go scripts that exercise a real Codex app-server through the wrapper.\n\n## Acceptance criteria\n- [ ] DeepSeek→GPT effort/tier round trip asserted\n- [ ] Model list shows both DeepSeek entries with `high|max` efforts\n- [ ] Skips cleanly when Codex is not installed"
+        }
+      ]
+    },
+    {
+      "key": "P7",
+      "title": "P7 — Parity & Differential Validation",
+      "phase": "P7 Parity & Differential",
+      "label": "phase/7-parity",
+      "milestone": "v0.9.0 — Bridge & Parity",
+      "area": "Testing",
+      "platform": "All",
+      "priority": "High",
+      "size": "L",
+      "est_days": 3,
+      "body": "## Goal\nProve parity: differential fixtures from upstream Node, remaining suites, race/stress passes, and real end-to-end tool loops.\n\n## Gate\n- [ ] Every row in `docs/03-parity-matrix.md` verified\n- [ ] Real Codex CLI tool loop works for both DeepSeek models\n- [ ] GPT passthrough regression green",
+      "tasks": [
+        {
+          "key": "P7.1",
+          "title": "P7.1 — Node differential fixture generator",
+          "type": "test",
+          "area": "Testing",
+          "platform": "All",
+          "priority": "High",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nScripts that run the upstream Node implementation to emit golden fixtures: catalog, config transforms, DeepSeek bodies, compaction seal/open, vision SSE.\n\n## Acceptance criteria\n- [ ] Fixtures checked into `testdata/`\n- [ ] Go tests assert parsed-structure equality\n- [ ] Regeneration documented"
+        },
+        {
+          "key": "P7.2",
+          "title": "P7.2 — Port remaining unit suites",
+          "type": "test",
+          "area": "Testing",
+          "platform": "All",
+          "priority": "High",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nClose any gaps against the upstream test list in `docs/03-parity-matrix.md`.\n\n## Acceptance criteria\n- [ ] Every upstream suite has a Go counterpart\n- [ ] No skipped tests without a documented reason"
+        },
+        {
+          "key": "P7.3",
+          "title": "P7.3 — Race and stress pass",
+          "type": "test",
+          "area": "Testing",
+          "platform": "All",
+          "priority": "Medium",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nRun `go test -race ./...` plus concurrent request, cache, and state-machine stress tests.\n\n## Acceptance criteria\n- [ ] No races on any OS\n- [ ] Vision cache and state writes safe under concurrency"
+        },
+        {
+          "key": "P7.4",
+          "title": "P7.4 — Real tool loop: deepseek-v4-flash",
+          "type": "test",
+          "area": "Testing",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nRun the upstream acceptance command with the Go router serving.\n\n## Command\n`codex -m deepseek/deepseek-v4-flash -c 'model_reasoning_effort=\"max\"' -a never exec --skip-git-repo-check 'call a shell tool exactly once ...'`\n\n## Acceptance criteria\n- [ ] Tool call executes and the turn completes\n- [ ] No replay errors on the next turn"
+        },
+        {
+          "key": "P7.5",
+          "title": "P7.5 — Real tool loop: deepseek-v4-pro",
+          "type": "test",
+          "area": "Testing",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nSame acceptance loop for `deepseek/deepseek-v4-pro`.\n\n## Acceptance criteria\n- [ ] Tool call executes and the turn completes\n- [ ] Effort reports `max`"
+        },
+        {
+          "key": "P7.6",
+          "title": "P7.6 — GPT passthrough regression",
+          "type": "test",
+          "area": "Testing",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nVerify GPT-bound traffic is forwarded untouched with OAuth headers intact and no DeepSeek transforms applied.\n\n## Acceptance criteria\n- [ ] Body byte-identical for a passthrough request\n- [ ] OAuth header set forwarded"
+        },
+        {
+          "key": "P7.7",
+          "title": "P7.7 — macOS picker and bridge smoke",
+          "type": "test",
+          "area": "Testing",
+          "platform": "macOS",
+          "priority": "High",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nRun the picker and state smokes against the desktop app catalog on macOS.\n\n## Acceptance criteria\n- [ ] `🐳 V4 Flash` and `🐳 V4 Pro` visible with `high|max` efforts\n- [ ] Native GPT entries preserved"
+        },
+        {
+          "key": "P7.8",
+          "title": "P7.8 — Parity matrix completion and docs sweep",
+          "type": "docs",
+          "area": "Docs",
+          "platform": "All",
+          "priority": "Medium",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nUpdate `03-parity-matrix.md` with verified results, document all intentional differences, and create `docs/10-upstream-sync.md`.\n\n## Acceptance criteria\n- [ ] Every matrix row marked verified\n- [ ] Upstream sync process documented"
+        }
+      ]
+    },
+    {
+      "key": "P8",
+      "title": "P8 — Release",
+      "phase": "P8 Release",
+      "label": "phase/8-release",
+      "milestone": "v1.0.0 — Parity Release",
+      "area": "CI/Release",
+      "platform": "All",
+      "priority": "High",
+      "size": "M",
+      "est_days": 1,
+      "body": "## Goal\nShip v1.0.0: cross-compiled binaries, checksums, release automation, and install documentation.\n\n## Gate\n- [ ] Release candidate installs and passes `doctor` on all three OSes\n- [ ] Checksums published\n- [ ] Docs complete",
+      "tasks": [
+        {
+          "key": "P8.1",
+          "title": "P8.1 — goreleaser config and version ldflags",
+          "type": "chore",
+          "area": "CI/Release",
+          "platform": "All",
+          "priority": "High",
+          "size": "M",
+          "est_days": 0.5,
+          "body": "## Goal\nAdd `.goreleaser.yml` building darwin/linux/windows × amd64/arm64 with `main.version` ldflags and checksums.\n\n## Acceptance criteria\n- [ ] `goreleaser build --snapshot` succeeds\n- [ ] Archives named consistently\n- [ ] Checksums generated"
+        },
+        {
+          "key": "P8.2",
+          "title": "P8.2 — Tag-triggered release workflow",
+          "type": "chore",
+          "area": "CI/Release",
+          "platform": "All",
+          "priority": "High",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nGitHub Actions workflow running goreleaser on `v*` tags with `GITHUB_TOKEN`.\n\n## Acceptance criteria\n- [ ] Tag push produces a draft release\n- [ ] Binaries attached with checksums"
+        },
+        {
+          "key": "P8.3",
+          "title": "P8.3 — Install documentation and checksums",
+          "type": "docs",
+          "area": "Docs",
+          "platform": "All",
+          "priority": "Medium",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nDocument install, upgrade from Node DSCodex, autostart, and uninstall with checksum verification.\n\n## Acceptance criteria\n- [ ] README quick start works from a clean machine\n- [ ] Migration notes cover drop-in state reuse"
+        },
+        {
+          "key": "P8.4",
+          "title": "P8.4 — v1.0.0 release candidate verification",
+          "type": "test",
+          "area": "Testing",
+          "platform": "All",
+          "priority": "Critical",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nInstall the release candidate on each OS, run `doctor`, and execute one tool loop per DeepSeek model.\n\n## Acceptance criteria\n- [ ] Six doctor checks `ok` on Windows, macOS, Linux\n- [ ] Both models complete a tool loop\n- [ ] GPT passthrough still works"
+        }
+      ]
+    }
+  ]
+}
