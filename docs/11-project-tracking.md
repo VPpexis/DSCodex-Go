@@ -13,7 +13,7 @@ The backlog is defined as code in `scripts/project/issues.json` and applied by
 
 | Field | Type | Values |
 | --- | --- | --- |
-| Status | built-in single select | Todo · In Progress · Blocked · Review · Done |
+| Status | built-in single select | Todo · In Progress · Blocked · In Review · Done |
 | Phase | single select | P0 Scaffold · P1 Foundation · P2 Router Core · P3 Vision & Compaction · P4 CLI & Lifecycle · P5 Autostart & Supervisor · P6 Bridge · P7 Parity & Differential · P8 Release |
 | Area | single select | Router · Vision · Compaction · CLI · Config · Catalog · Keystore · Proxy · Autostart · Bridge · Docs · CI/Release · Testing |
 | Platform | single select | All · macOS · Linux · Windows |
@@ -23,7 +23,7 @@ The backlog is defined as code in `scripts/project/issues.json` and applied by
 | Target | date | — |
 
 > GitHub's built-in Status field ships with `Todo`, `In Progress`, and `Done`.
-> Add `Blocked` and `Review` once in the Project UI (Settings → Status →
+> Add `Blocked` and `In Review` once in the Project UI (Settings → Status →
 > edit options) — the CLI cannot edit select options.
 
 ### Views (one-time UI setup)
@@ -122,7 +122,7 @@ To change the backlog, edit `issues.json` and re-run the script.
 ## Status flow
 
 ```
-Todo ──branch created──▶ In Progress ──PR opened──▶ Review ──merged + gate──▶ Done
+Todo ──branch created──▶ In Progress ──PR opened──▶ In Review ──merged + gate──▶ Done
              ▲                                          │
              └──────────── changes requested ◀──────────┘
 Blocked: waiting on an external dependency (comment explains)

@@ -318,7 +318,7 @@ Write-Step "Done"
 Write-Host "Project: https://github.com/users/$Owner/projects/$projectNumber"
 Write-Host ""
 Write-Host "Manual one-time UI steps (see docs/11-project-tracking.md):" -ForegroundColor Yellow
-Write-Host "  1. Project Settings -> Status: add 'Blocked' and 'Review' options"
+Write-Host "  1. Project Settings -> Status: add 'Blocked' and 'In Review' options"
 Write-Host "  2. Create views: Board (Status), Roadmap (Target, group Phase), Phase Table,"
 Write-Host "     Windows Track (platform:Windows,All), Docs & Release (area:Docs,CI/Release), Blocked"
 Write-Host "  3. Enable workflows: auto-add items, item closed -> Done, item reopened -> Todo,"
