@@ -1,0 +1,54 @@
+#!/bin/sh
+# DSCodex-Go pre-commit hook: block commits that contain likely secrets.
+#
+# Full scan (recommended): install gitleaks
+#   winget install gitleaks
+#   brew install gitleaks
+#   go install github.com/gitleaks/gitleaks/v8@latest
+#
+# Without gitleaks a conservative pattern fallback still runs.
+# Bypass only when you are certain: git commit --no-verify
+
+set -u
+
+files=$(git diff --cached --name-only --diff-filter=ACMR)
+[ -z "$files" ] && exit 0
+
+if command -v gitleaks >/dev/null 2>&1; then
+  if gitleaks git --help >/dev/null 2>&1; then
+    gitleaks git --staged --redact --verbose
+  else
+    gitleaks protect --staged --redact --verbose
+  fi
+  status=$?
+  if [ "$status" -ne 0 ]; then
+    echo "pre-commit: gitleaks found a potential secret; commit blocked." >&2
+  fi
+  exit "$status"
+fi
+
+echo "pre-commit: gitleaks not found; running pattern fallback (install gitleaks for full scanning)." >&2
+
+pattern='sk-[A-Za-z0-9]{16,}|"deepseek_api_key"[[:space:]]*:[[:space:]]*"[^"]{8,}"|"(router_token|routerToken|shutdown_token|shutdownToken)"[[:space:]]*:[[:space:]]*"[A-Za-z0-9_-]{43}"|https?://[^/@:[:space:]]+:[^/@[:space:]]+@'
+
+fail=0
+IFS='
+'
+for file in $files; do
+  [ -f "$file" ] || continue
+  case "$file" in
+    *.png|*.jpg|*.jpeg|*.ico|*.exe|*.bin|*.zip|*.gz) continue ;;
+  esac
+  matches=$(grep -nEI -- "$pattern" "$file" 2>/dev/null) || true
+  if [ -n "$matches" ]; then
+    echo "pre-commit: possible secret in $file:" >&2
+    echo "$matches" >&2
+    fail=1
+  fi
+done
+
+if [ "$fail" -ne 0 ]; then
+  echo "pre-commit: commit blocked. Install gitleaks for full scanning; use --no-verify only if certain." >&2
+  exit 1
+fi
+exit 0

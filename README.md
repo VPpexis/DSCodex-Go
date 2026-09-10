@@ -35,6 +35,18 @@ go test -race ./...
 
 Or via make: `make build`, `make test`, `make cross`.
 
+## Security
+
+Secrets are blocked at three layers:
+
+- **Pre-commit:** `make hooks` installs a gitleaks hook (with a pattern
+  fallback when gitleaks is absent) that refuses commits containing likely
+  secrets.
+- **CI:** `.github/workflows/security.yml` runs gitleaks on every push, pull
+  request, and weekly full-history scan.
+- **GitHub:** push protection blocks detected secrets server-side
+  (`scripts/repo/enable-push-protection.ps1`).
+
 ## Documentation
 
 | Doc | Contents |

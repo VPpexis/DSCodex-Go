@@ -14,7 +14,10 @@ match its behavior exactly.
 | Vet | `go vet ./...` |
 | Format | `gofmt -w .` |
 | Cross-compile | `make cross` |
+| Install git hooks | `make hooks` (run once per clone) |
+| Secret scan | `make secrets` (requires gitleaks) |
 | Project bootstrap | `pwsh -File scripts/project/bootstrap.ps1` (or Windows PowerShell) |
+| Enable GitHub push protection | `pwsh -File scripts/repo/enable-push-protection.ps1` |
 
 Baseline toolchain: **Go 1.21** (the `go` directive in `go.mod`). Dependencies
 added in P2+ may force a bump; if so, update `go.mod`, CI, and this file in the
@@ -34,6 +37,12 @@ same PR.
 1. **Secrets never leak.** Never print, log, or commit the DeepSeek API key or
    proxy credentials. Redact proxy URLs in CLI output. The stored key file is
    `~/.codex/dscodex/config.json` (mode 0600; DPAPI-encrypted on Windows).
+   Run `make hooks` once per clone: the pre-commit hook runs gitleaks (with a
+   pattern fallback when gitleaks is absent) and blocks likely secrets. CI runs
+   gitleaks on every push and PR (`.github/workflows/security.yml`), and GitHub
+   push protection is enabled with
+   `scripts/repo/enable-push-protection.ps1`. Test fixtures must use the
+   allowlisted fake patterns (`sk-test-…`, `sk-fake-…`, `REDACTED`).
 2. **config.toml is user-owned.** Only the marker-managed root keys
    (`openai_base_url`, `model_catalog_json`), the marker-owned
    `[desktop].enabled-reasoning-efforts` entry, and DSCodex-owned

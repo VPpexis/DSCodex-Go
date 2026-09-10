@@ -1,0 +1,56 @@
+# Gitleaks configuration for DSCodex-Go.
+# Docs: https://github.com/gitleaks/gitleaks
+#
+# Run locally:  gitleaks detect --source . --redact --verbose
+# CI:           .github/workflows/security.yml
+# Pre-commit:   .githooks/pre-commit (install with `make hooks`)
+
+title = "DSCodex-Go"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "dscodex-deepseek-api-key"
+description = "DeepSeek API key"
+regex = '''\bsk-[A-Za-z0-9]{16,}\b'''
+tags = ["key", "deepseek"]
+
+[[rules]]
+id = "dscodex-stored-key-field"
+description = "DSCodex stored DeepSeek key field"
+regex = '''(?i)"deepseek_api_key"\s*:\s*"[^"]{8,}"'''
+tags = ["key", "dscodex"]
+
+[[rules]]
+id = "dscodex-router-token"
+description = "DSCodex router or shutdown token assignment"
+regex = '''(?i)"(router_token|routerToken|shutdown_token|shutdownToken)"\s*[:=]\s*"[A-Za-z0-9_-]{43}"'''
+tags = ["token", "dscodex"]
+
+[[rules]]
+id = "proxy-url-credentials"
+description = "Proxy URL with embedded credentials"
+regex = '''(?i)\b(?:https?|socks5?)://[^/\s:@]+:[^/\s@]+@[^/\s]+'''
+tags = ["proxy", "credentials"]
+
+[[rules.allowlists]]
+description = "Proxy URL examples in tests and fixtures"
+paths = [
+  '''_test\.go$''',
+  '''testdata/''',
+]
+
+[allowlist]
+description = "Documented placeholders and test fakes"
+paths = [
+  '''testdata/''',
+]
+regexes = [
+  '''sk-test-''',
+  '''sk-fake-''',
+  '''sk-example-''',
+  '''EXAMPLE_KEY''',
+  '''__REPLACE_ME__''',
+  '''REDACTED''',
+]
