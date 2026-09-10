@@ -2,7 +2,7 @@ BINARY  := dscodex
 VERSION ?= dev
 LDFLAGS := -s -w -X main.version=$(VERSION)
 
-.PHONY: all build test fmt vet tidy clean cross hooks secrets
+.PHONY: all build test fmt vet lint tidy clean cross hooks secrets
 
 all: build
 
@@ -17,6 +17,9 @@ fmt:
 
 vet:
 	go vet ./...
+
+lint:
+	golangci-lint run ./...
 
 tidy:
 	go mod tidy

@@ -33,7 +33,7 @@ go vet ./...
 go test -race ./...
 ```
 
-Or via make: `make build`, `make test`, `make cross`.
+Or via make: `make build`, `make test`, `make lint`, `make cross`.
 
 ## Security
 

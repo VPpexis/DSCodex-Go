@@ -12,6 +12,7 @@ match its behavior exactly.
 | Build | `go build ./...` |
 | Test | `go test -race ./...` |
 | Vet | `go vet ./...` |
+| Lint | `golangci-lint run ./...` (or `make lint`) |
 | Format | `gofmt -w .` |
 | Cross-compile | `make cross` |
 | Install git hooks | `make hooks` (run once per clone) |
