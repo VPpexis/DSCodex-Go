@@ -62,7 +62,7 @@ $issuesFile = Join-Path $scriptDir "issues.json"
 if (-not (Test-Path -LiteralPath $issuesFile)) {
     throw "Backlog file not found: $issuesFile"
 }
-$spec = Get-Content -LiteralPath $issuesFile -Raw | ConvertFrom-Json
+$spec = Get-Content -LiteralPath $issuesFile -Raw -Encoding UTF8 | ConvertFrom-Json
 
 if (-not $Owner -or -not $Repo) {
     $nwo = & gh repo view --json nameWithOwner --jq ".nameWithOwner" 2>$null
