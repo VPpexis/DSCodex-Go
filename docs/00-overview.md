@@ -58,6 +58,9 @@ installs: same `~/.codex` paths, file formats, keys, and router tokens.
 4. **Binary path is baked into autostart artifacts.** Upstream embeds
    `node + cli.mjs`; the port embeds the `dscodex` binary path. `doctor`
    reports a broken binding.
+5. **Picker display names are plain.** Upstream shows `🐳 V4 Flash` /
+   `🐳 V4 Pro`; DSCodex-Go shows `DeepSeek V4 Flash` / `DeepSeek V4 Pro`.
+   Slugs, wire models, and routing are unchanged.
 
 ## Glossary
 

@@ -1,0 +1,11 @@
+version: "2"
+
+linters:
+  default: standard
+  exclusions:
+    rules:
+      # Upstream DSCodex error strings are preserved verbatim for behavioral
+      # parity, including their capitalization (ST1005).
+      - linters:
+          - staticcheck
+        text: ST1005

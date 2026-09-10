@@ -925,7 +925,7 @@
           "priority": "High",
           "size": "S",
           "est_days": 0.25,
-          "body": "## Goal\nRun the picker and state smokes against the desktop app catalog on macOS.\n\n## Acceptance criteria\n- [ ] `🐳 V4 Flash` and `🐳 V4 Pro` visible with `high|max` efforts\n- [ ] Native GPT entries preserved"
+          "body": "## Goal\nRun the picker and state smokes against the desktop app catalog on macOS.\n\n## Acceptance criteria\n- [ ] `DeepSeek V4 Flash` and `DeepSeek V4 Pro` visible with `high|max` efforts\n- [ ] Native GPT entries preserved"
         },
         {
           "key": "P7.8",
@@ -984,7 +984,7 @@
           "priority": "Medium",
           "size": "S",
           "est_days": 0.25,
-          "body": "## Goal\nDocument install, upgrade from Node DSCodex, autostart, and uninstall with checksum verification.\n\n## Acceptance criteria\n- [ ] README quick start works from a clean machine\n- [ ] Migration notes cover drop-in state reuse"
+          "body": "## Goal\nDocument install, upgrade from Node DSCodex, autostart, and uninstall with checksum verification.\n\n## Acceptance criteria\n- [ ] README quick start works from a clean machine\n- [ ] Migration notes cover drop-in state reuse\n- [ ] Covers the `go install` path and portable-binary PATH setup (P8.5)\n- [ ] States binaries are unsigned (SmartScreen / Gatekeeper steps)"
         },
         {
           "key": "P8.4",
@@ -996,6 +996,17 @@
           "size": "S",
           "est_days": 0.25,
           "body": "## Goal\nInstall the release candidate on each OS, run `doctor`, and execute one tool loop per DeepSeek model.\n\n## Acceptance criteria\n- [ ] Six doctor checks `ok` on Windows, macOS, Linux\n- [ ] Both models complete a tool loop\n- [ ] GPT passthrough still works"
+        },
+        {
+          "key": "P8.5",
+          "title": "P8.5 — Install guide: go install and portable binary paths",
+          "type": "docs",
+          "area": "Docs",
+          "platform": "All",
+          "priority": "Medium",
+          "size": "S",
+          "est_days": 0.25,
+          "body": "## Goal\nDocument and verify the `go install` path and portable-binary PATH setup in the installation guide (P8.3).\n\n## Acceptance criteria\n- [ ] `go install github.com/VPpexis/dscodex-go/cmd/dscodex@latest` produces a working `dscodex` binary\n- [ ] Covers `$(go env GOPATH)/bin` (and `%USERPROFILE%\\go\\bin`) on PATH\n- [ ] Covers portable-binary PATH setup on Windows, macOS, and Linux\n- [ ] Covers upgrading via `go install` and uninstalling\n- [ ] Notes that binaries are unsigned (SmartScreen / Gatekeeper steps)"
         }
       ]
     }
