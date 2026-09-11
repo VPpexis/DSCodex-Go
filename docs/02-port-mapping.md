@@ -54,6 +54,10 @@ name in Go style where practical, and its behavior is the contract.
   `[mcp_servers.*.env]`.
 - `ensureManagedRouterBinding` reconciles the managed URL with the persisted
   token and port at every runtime entry point.
+- The Go `Install` receives the catalog builder/writer through a small
+  `Catalog` interface (wired by the CLI) until `internal/catalog` lands, and
+  the missing-block error points at `dscodex install` rather than
+  `node src/cli.mjs install`; both are recorded in `03-parity-matrix.md`.
 
 ### `catalog.mjs`
 - The DeepSeek template is cloned from `gpt-5.6-sol` (fallback: first native

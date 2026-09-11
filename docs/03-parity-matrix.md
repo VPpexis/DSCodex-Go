@@ -19,7 +19,7 @@ Status legend: `—` not started · `WIP` in progress · `OK` ported and tested 
 | SSE streaming + disconnect abort | OK | — | All | Flush per chunk |
 | Authenticated shutdown | OK | — | All | `_dscodex/shutdown` |
 | Catalog merge (`dscodex-models.json`) | OK | — | All | |
-| `config.toml` managed block | OK | — | All | Line-oriented |
+| `config.toml` managed block | OK | WIP | All | Line-oriented |
 | Key storage (DPAPI / 0600) | OK | — | Win / POSIX | |
 | Proxy resolution + redaction | OK | — | All | Native in Go (no re-exec) |
 | `start` / `serve` / `stop` / `status` | OK | — | All | PID-state trust model |
@@ -60,6 +60,8 @@ Status legend: `—` not started · `WIP` in progress · `OK` ported and tested 
 | Autostart embeds binary path, not node+script | Reinstall if binary moves | Static binary |
 | `serve` does not set `DSCODEX_PROXY_REEXEC` | None | Node-only mechanism |
 | Picker display names are plain (`DeepSeek V4 Flash`) | Cosmetic; slugs, wire models, and routing unchanged | Product choice for DSCodex-Go |
+| `codexconfig.Install` takes a `Catalog` interface instead of importing `internal/catalog` | None observable; the CLI wires the real catalog | Keeps P1.6 unblocked before the catalog port (P1.8/P1.9) |
+| Missing-block error says `dscodex install` | Cosmetic; same recovery action | The Go port has no `node src/cli.mjs` entry point |
 
 ## Test parity suites
 
@@ -67,7 +69,7 @@ Status legend: `—` not started · `WIP` in progress · `OK` ported and tested 
 | --- | --- | --- |
 | `app-server-state.test.mjs` | `internal/bridge/state_test.go` | — |
 | `autostart.test.mjs` | `internal/autostart/autostart_test.go` | — |
-| `config.test.mjs` | `internal/codexconfig/config_test.go` | — |
+| `config.test.mjs` | `internal/codexconfig/config_test.go` | WIP |
 | `keys.test.mjs` | `internal/keystore/keys_test.go` | — |
 | `platform.test.mjs` | `internal/constants/platform_test.go` | — |
 | `proxy-config.test.mjs` | `internal/proxycfg/proxycfg_test.go` | — |
