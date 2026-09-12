@@ -1,0 +1,146 @@
+{
+  "models": [
+    {
+      "slug": "deepseek/deepseek-v4-flash",
+      "display_name": "🐳 V4 Flash",
+      "description": "DeepSeek V4 Flash via the native Responses API.",
+      "default_reasoning_level": "max",
+      "supported_reasoning_levels": [
+        {
+          "effort": "high",
+          "description": "DeepSeek thinking mode"
+        },
+        {
+          "effort": "max",
+          "description": "Maximum DeepSeek thinking depth"
+        }
+      ],
+      "shell_type": "shell_command",
+      "visibility": "list",
+      "supported_in_api": true,
+      "priority": 0,
+      "context_window": 1048576,
+      "base_instructions": "You are Codex, powered by DeepSeek V4 Flash.",
+      "model_messages": {
+        "instructions_template": "You are Codex, powered by DeepSeek V4 Flash. Follow the instructions."
+      },
+      "prefer_websockets": false,
+      "support_verbosity": true,
+      "default_verbosity": "low",
+      "apply_patch_tool_type": "freeform",
+      "web_search_tool_type": "text",
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "supports_image_detail_original": false,
+      "supports_parallel_tool_calls": false,
+      "supports_search_tool": true,
+      "tool_mode": null,
+      "multi_agent_version": "v2",
+      "use_responses_lite": false,
+      "include_skills_usage_instructions": false,
+      "max_context_window": 1048576,
+      "effective_context_window_percent": 95,
+      "auto_compact_token_limit": null,
+      "default_reasoning_summary": "none",
+      "supports_reasoning_summaries": false,
+      "minimal_client_version": "0.144.0",
+      "availability_nux": null,
+      "upgrade": null,
+      "experimental_supported_tools": []
+    },
+    {
+      "slug": "deepseek/deepseek-v4-pro",
+      "display_name": "🐳 V4 Pro",
+      "description": "DeepSeek V4 Pro via the native Responses API.",
+      "default_reasoning_level": "max",
+      "supported_reasoning_levels": [
+        {
+          "effort": "high",
+          "description": "DeepSeek thinking mode"
+        },
+        {
+          "effort": "max",
+          "description": "Maximum DeepSeek thinking depth"
+        }
+      ],
+      "shell_type": "shell_command",
+      "visibility": "list",
+      "supported_in_api": true,
+      "priority": 0,
+      "context_window": 1048576,
+      "base_instructions": "You are Codex, powered by DeepSeek V4 Pro.",
+      "model_messages": {
+        "instructions_template": "You are Codex, powered by DeepSeek V4 Pro. Follow the instructions."
+      },
+      "prefer_websockets": false,
+      "support_verbosity": true,
+      "default_verbosity": "low",
+      "apply_patch_tool_type": "freeform",
+      "web_search_tool_type": "text",
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "supports_image_detail_original": false,
+      "supports_parallel_tool_calls": false,
+      "supports_search_tool": true,
+      "tool_mode": null,
+      "multi_agent_version": "v2",
+      "use_responses_lite": false,
+      "include_skills_usage_instructions": false,
+      "max_context_window": 1048576,
+      "effective_context_window_percent": 95,
+      "auto_compact_token_limit": null,
+      "default_reasoning_summary": "none",
+      "supports_reasoning_summaries": false,
+      "minimal_client_version": "0.144.0",
+      "availability_nux": null,
+      "upgrade": null,
+      "experimental_supported_tools": []
+    },
+    {
+      "slug": "gpt-5.6-sol",
+      "display_name": "GPT-5.6-Sol",
+      "description": "native",
+      "default_reasoning_level": "low",
+      "supported_reasoning_levels": [
+        {
+          "effort": "low",
+          "description": "fast"
+        }
+      ],
+      "shell_type": "shell_command",
+      "visibility": "list",
+      "supported_in_api": true,
+      "priority": 1,
+      "context_window": 400000,
+      "additional_speed_tiers": [
+        "fast"
+      ],
+      "service_tiers": [
+        "default"
+      ],
+      "default_service_tier": "default",
+      "base_instructions": "You are Codex, an agent based on GPT-5.",
+      "model_messages": {
+        "instructions_template": "You are Codex, based on GPT-5. Follow the instructions."
+      },
+      "supports_reasoning_summaries": false
+    },
+    {
+      "slug": "gpt-5.6-mini",
+      "display_name": "GPT-5.6-Mini",
+      "description": "native mini",
+      "visibility": "list",
+      "supported_in_api": true,
+      "priority": 2,
+      "base_instructions": "You are Codex, based on GPT-5.",
+      "model_messages": {
+        "instructions_template": "You are Codex, based on GPT-5."
+      },
+      "supports_reasoning_summaries": false
+    }
+  ]
+}
