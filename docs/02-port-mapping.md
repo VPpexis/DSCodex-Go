@@ -55,21 +55,30 @@ name in Go style where practical, and its behavior is the contract.
 - `ensureManagedRouterBinding` reconciles the managed URL with the persisted
   token and port at every runtime entry point.
 - The Go `Install` receives the catalog builder/writer through a small
-  `Catalog` interface (wired by the CLI) until `internal/catalog` lands, and
-  the missing-block error points at `dscodex install` rather than
-  `node src/cli.mjs install`; both are recorded in `03-parity-matrix.md`.
+  `Catalog` interface (wired by the CLI; `catalog.Store` adapts
+  `internal/catalog`), and the missing-block error points at `dscodex install`
+  rather than `node src/cli.mjs install`; both are recorded in
+  `03-parity-matrix.md`.
 
 ### `catalog.mjs`
-- The DeepSeek template is cloned from `gpt-5.6-sol` (fallback: first native
-  entry); native entries get backfilled defaults (`prefer_websockets=false`,
-  `supports_reasoning_summaries=false`, `base_instructions`).
+- `buildCatalog` clones the DeepSeek entries from the raw `gpt-5.6-sol`
+  template (fallback: first native entry); cached entries whose slug is a
+  DeepSeek picker slug are dropped, and native entries get the backfilled
+  default `supports_reasoning_summaries=false`.
 - DeepSeek entries pin: `visibility=list`, `default_reasoning_level=max`,
   levels `high|max`, `input_modalities=["text","image"]`,
-  `supports_parallel_tool_calls=false`, `context_window=1048576`,
-  `apply_patch_tool_type="freeform"`, `web_search_tool_type="text"`, and the
-  identity replacement in instructions.
-- `additional_speed_tiers`, `service_tiers`, `default_service_tier` are deleted.
-- Write is atomic JSON with 2-space indent.
+  `prefer_websockets=false`, `supports_parallel_tool_calls=false`,
+  `context_window=1048576`, `apply_patch_tool_type="freeform"`,
+  `web_search_tool_type="text"`, and the identity replacement in
+  `base_instructions` / `model_messages.instructions_template`.
+- `additional_speed_tiers`, `service_tiers`, `default_service_tier` are deleted
+  from DeepSeek entries only; native entries keep them.
+- `writeCatalog` is atomic JSON (temp file + rename), 2-space indent, 0600;
+  `syncCatalog` reads `models_cache.json` and rewrites the catalog.
+- An empty `models_cache.json` produces the upstream
+  `Codex models_cache.json has no model templates; open Codex once, then retry`
+  error; a cache with only DeepSeek entries is rejected with a
+  no-native-template error (v1.1.0 would throw a `TypeError`).
 
 ### `proxy.mjs` → router
 - Header allow-lists: OAuth set for ChatGPT, `user-agent` only for DeepSeek.
