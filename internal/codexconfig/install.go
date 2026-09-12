@@ -13,10 +13,11 @@ import (
 )
 
 // Catalog builds the merged model catalog from the Codex model cache and
-// persists it. internal/catalog implements it once ported; tests use fakes.
+// persists it. internal/catalog implements it; tests use fakes. Write takes the
+// catalog path so the interface mirrors upstream writeCatalog({catalogPath}).
 type Catalog interface {
 	Build(cache map[string]any) (map[string]any, error)
-	Write(catalog map[string]any) error
+	Write(catalogPath string, catalog map[string]any) error
 }
 
 // InstallResult mirrors the upstream install() return value.
@@ -212,7 +213,7 @@ func Install(paths constants.Paths, port int, catalog Catalog) (InstallResult, e
 			return InstallResult{}, err
 		}
 	}
-	if err := catalog.Write(built); err != nil {
+	if err := catalog.Write(paths.Catalog, built); err != nil {
 		return InstallResult{}, err
 	}
 	if !strings.HasSuffix(configured, "\n") {

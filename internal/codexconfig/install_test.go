@@ -9,12 +9,12 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/VPpexis/dscodex-go/internal/catalog"
 	"github.com/VPpexis/dscodex-go/internal/constants"
 	"github.com/VPpexis/dscodex-go/internal/keystore"
 )
 
 type fakeCatalog struct {
-	path      string
 	builds    int
 	writes    int
 	lastCache map[string]any
@@ -30,14 +30,14 @@ func (f *fakeCatalog) Build(cache map[string]any) (map[string]any, error) {
 	}}, nil
 }
 
-func (f *fakeCatalog) Write(catalog map[string]any) error {
+func (f *fakeCatalog) Write(catalogPath string, catalog map[string]any) error {
 	f.writes++
 	f.lastBuilt = catalog
 	data, err := json.Marshal(catalog)
 	if err != nil {
 		return err
 	}
-	return os.WriteFile(f.path, data, 0o600)
+	return os.WriteFile(catalogPath, data, 0o600)
 }
 
 func newTestPaths(t *testing.T) constants.Paths {
@@ -221,7 +221,7 @@ func TestInstallAndUninstallTouchOnlyDSCodexOwnedFilesAndLines(t *testing.T) {
 	writeFile(t, paths.Config, original)
 	writeFile(t, paths.Cache, `{"models":[{"slug":"gpt-5.6-sol"}]}`)
 
-	catalog := &fakeCatalog{path: paths.Catalog}
+	catalog := &fakeCatalog{}
 	result, err := Install(paths, 10110, catalog)
 	if err != nil {
 		t.Fatal(err)
@@ -278,12 +278,12 @@ func TestInstallWritesBackupOnce(t *testing.T) {
 	writeFile(t, paths.Config, first)
 	writeFile(t, paths.Cache, `{"models":[]}`)
 
-	if _, err := Install(paths, 10110, &fakeCatalog{path: paths.Catalog}); err != nil {
+	if _, err := Install(paths, 10110, &fakeCatalog{}); err != nil {
 		t.Fatal(err)
 	}
 	second := "[features]\nmulti_agent = false\n"
 	writeFile(t, paths.Config, second)
-	if _, err := Install(paths, 10110, &fakeCatalog{path: paths.Catalog}); err != nil {
+	if _, err := Install(paths, 10110, &fakeCatalog{}); err != nil {
 		t.Fatal(err)
 	}
 	if got := readFile(t, paths.Backup); got != first {
@@ -302,7 +302,7 @@ func TestInstallValidatesRouterStateBeforeChangingConfigOrCatalog(t *testing.T) 
 	}
 	writeFile(t, paths.KeyFile, secret)
 
-	catalog := &fakeCatalog{path: paths.Catalog}
+	catalog := &fakeCatalog{}
 	_, err := Install(paths, 10110, catalog)
 	if err == nil {
 		t.Fatal("Install() = nil error, want the corrupt config error")
@@ -339,7 +339,7 @@ func TestInstallRefusesRunningLegacyRouterBeforePublishingAuthenticatedState(t *
 	}
 	writeFile(t, paths.PID, fmt.Sprintf("{\"pid\":%d,\"port\":10110}\n", os.Getpid()))
 
-	catalog := &fakeCatalog{path: paths.Catalog}
+	catalog := &fakeCatalog{}
 	_, err := Install(paths, 10110, catalog)
 	if err == nil || !strings.Contains(err.Error(), "older or untrusted DSCodex state is still running") {
 		t.Fatalf("Install() error = %v, want the legacy router error", err)
@@ -374,7 +374,7 @@ func TestInstallAllowsAuthenticatedPidState(t *testing.T) {
 	)
 	writeFile(t, paths.PID, state)
 
-	if _, err := Install(paths, 10110, &fakeCatalog{path: paths.Catalog}); err != nil {
+	if _, err := Install(paths, 10110, &fakeCatalog{}); err != nil {
 		t.Fatalf("Install() error = %v, want success over an authenticated pid state", err)
 	}
 }
@@ -387,7 +387,7 @@ func TestInstallAllowsUntrustedPidStateForDeadProcess(t *testing.T) {
 	}
 	writeFile(t, paths.PID, fmt.Sprintf("{\"pid\":%d,\"port\":10110}\n", deadProcessPID(t)))
 
-	if _, err := Install(paths, 10110, &fakeCatalog{path: paths.Catalog}); err != nil {
+	if _, err := Install(paths, 10110, &fakeCatalog{}); err != nil {
 		t.Fatalf("Install() error = %v, want stale pid state to be tolerated", err)
 	}
 }
@@ -433,7 +433,7 @@ func TestInstallMigratesLegacyWindowsPlaintextKeyBeforeReturning(t *testing.T) {
 	writeFile(t, paths.KeyFile, fmt.Sprintf("{\"deepseek_api_key\":%q}\n", legacyKey))
 	writeFile(t, paths.Cache, `{"models":[]}`)
 
-	if _, err := Install(paths, 10110, &fakeCatalog{path: paths.Catalog}); err != nil {
+	if _, err := Install(paths, 10110, &fakeCatalog{}); err != nil {
 		t.Fatal(err)
 	}
 	if got := keystore.ReadStoredKey(paths.KeyFile); got != legacyKey {
@@ -448,6 +448,34 @@ func TestUninstallWithoutConfig(t *testing.T) {
 	paths := newTestPaths(t)
 	if err := Uninstall(paths); err != nil {
 		t.Fatalf("Uninstall() error = %v, want nil", err)
+	}
+}
+
+func TestInstallUsesRealCatalogPackage(t *testing.T) {
+	paths := newTestPaths(t)
+	writeFile(t, paths.Config, "[features]\nmulti_agent = true\n")
+	writeFile(t, paths.Cache, `{"models":[{"slug":"gpt-5.6-sol","base_instructions":"You are Codex, based on GPT-5."}]}`)
+
+	result, err := Install(paths, 10110, catalog.Store{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	models, _ := result.Catalog["models"].([]any)
+	if len(models) != 3 {
+		t.Fatalf("installed catalog has %d models, want 3", len(models))
+	}
+	written := map[string]any{}
+	if err := json.Unmarshal([]byte(readFile(t, paths.Catalog)), &written); err != nil {
+		t.Fatalf("catalog on disk is not valid JSON: %v", err)
+	}
+	slugs := map[string]bool{}
+	for _, item := range written["models"].([]any) {
+		slugs[item.(map[string]any)["slug"].(string)] = true
+	}
+	for _, slug := range []string{"deepseek/deepseek-v4-flash", "deepseek/deepseek-v4-pro", "gpt-5.6-sol"} {
+		if !slugs[slug] {
+			t.Errorf("installed catalog is missing slug %q", slug)
+		}
 	}
 }
 
