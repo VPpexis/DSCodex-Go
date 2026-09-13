@@ -59,6 +59,30 @@ name in Go style where practical, and its behavior is the contract.
   `internal/catalog`), and the missing-block error points at `dscodex install`
   rather than `node src/cli.mjs install`; both are recorded in
   `03-parity-matrix.md`.
+- `ensureManagedRouterBinding` guards every runtime entry point against a
+  legacy router, adopts or creates the router token, and rewrites the managed
+  block only when the URL does not match the persisted port/catalog/token.
+
+### `proxy-config.mjs`
+- Resolution order: `DSCODEX_HTTPS_PROXY`, `DSCODEX_HTTP_PROXY`,
+  `dscodex_https_proxy`, `dscodex_http_proxy`, then the standard names
+  lowercase-first (`https_proxy`, `HTTPS_PROXY`, `http_proxy`, `HTTP_PROXY`),
+  then the stored value. Every candidate is trimmed; the first non-empty wins.
+- `proxySource` names the winning source: `DSCODEX_*_PROXY env`,
+  `HTTP(S)_PROXY env`, `stored in config.json`, or empty.
+- `validateProxyUrl` accepts only `http`/`https` URLs with a hostname and
+  returns the trimmed input; anything else raises
+  `Invalid proxy URL (expected http:// or https:// with a hostname)`.
+- `redactProxyUrl` replaces userinfo with `redacted`, the query with
+  `?redacted`, and the fragment with `#redacted`; values the WHATWG URL
+  constructor would reject become `<invalid proxy URL>`.
+- `mergeNoProxy` keeps existing entries (order and case) and appends
+  `127.0.0.1`, `localhost`, `::1`, `api.deepseek.com` when missing, comparing
+  case-insensitively.
+- Node-only helpers (`envProxySupported`, `usesEnvProxy`, `appendEnvProxyFlag`,
+  and `proxyEnvFor`'s `NODE_OPTIONS` handling) are not ported: the Go router
+  has no re-exec and uses `http.Transport.Proxy` natively. Redacted strings
+  follow Go's `net/url` formatting (no trailing slash added for empty paths).
 
 ### `catalog.mjs`
 - `buildCatalog` clones the DeepSeek entries from the raw `gpt-5.6-sol`

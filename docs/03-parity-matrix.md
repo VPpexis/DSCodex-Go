@@ -19,9 +19,9 @@ Status legend: `—` not started · `WIP` in progress · `OK` ported and tested 
 | SSE streaming + disconnect abort | OK | — | All | Flush per chunk |
 | Authenticated shutdown | OK | — | All | `_dscodex/shutdown` |
 | Catalog merge (`dscodex-models.json`) | OK | OK | All | Golden fixture vs upstream v1.1.0 |
-| `config.toml` managed block | OK | WIP | All | Line-oriented |
+| `config.toml` managed block | OK | OK | All | Line-oriented |
 | Key storage (DPAPI / 0600) | OK | — | Win / POSIX | |
-| Proxy resolution + redaction | OK | — | All | Native in Go (no re-exec) |
+| Proxy resolution + redaction | OK | OK | All | Native in Go (no re-exec) |
 | `start` / `serve` / `stop` / `status` | OK | — | All | PID-state trust model |
 | `doctor` six checks | OK | — | All | |
 | Autostart (launchd/systemd/schtasks) | OK | — | Per OS | |
@@ -63,6 +63,7 @@ Status legend: `—` not started · `WIP` in progress · `OK` ported and tested 
 | `codexconfig.Install` takes a `Catalog` interface instead of importing `internal/catalog` | None observable; the CLI wires `catalog.Store` | Keeps the packages decoupled and testable |
 | Missing-block error says `dscodex install` | Cosmetic; same recovery action | The Go port has no `node src/cli.mjs` entry point |
 | All-DeepSeek `models_cache.json` rejected with a clear error | Install fails instead of a `TypeError` | v1.1.0 has no native-template guard |
+| Redacted proxy URLs use Go `net/url` formatting | Cosmetic; display only | WHATWG URL adds a trailing slash to empty paths |
 
 ## Test parity suites
 
@@ -70,12 +71,13 @@ Status legend: `—` not started · `WIP` in progress · `OK` ported and tested 
 | --- | --- | --- |
 | `app-server-state.test.mjs` | `internal/bridge/state_test.go` | — |
 | `autostart.test.mjs` | `internal/autostart/autostart_test.go` | — |
-| `config.test.mjs` | `internal/codexconfig/config_test.go` | WIP |
+| `config.test.mjs` | `internal/codexconfig/config_test.go` | OK |
 | `config.test.mjs` (catalog cases) | `internal/catalog/catalog_test.go` | OK |
 | `config.test.mjs` (`stripBridgeCliPath`) | `internal/codexconfig/bridge_test.go` | OK |
-| `keys.test.mjs` | `internal/keystore/keys_test.go` | — |
-| `platform.test.mjs` | `internal/constants/platform_test.go` | — |
-| `proxy-config.test.mjs` | `internal/proxycfg/proxycfg_test.go` | — |
+| `config.test.mjs` (`ensureManagedRouterBinding`) | `internal/codexconfig/binding_test.go` | OK |
+| `keys.test.mjs` | `internal/keystore/keys_test.go` | OK |
+| `platform.test.mjs` | `internal/constants/platform_test.go` | OK |
+| `proxy-config.test.mjs` | `internal/proxycfg/proxycfg_test.go` | OK |
 | `proxy.test.mjs` | `internal/router/proxy_test.go` | — |
 | `real-codex.test.mjs` | `internal/bridge/realcodex_test.go` | — |
 | `supervisor.test.mjs` | `internal/supervisor/supervisor_test.go` | — |

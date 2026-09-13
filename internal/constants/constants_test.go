@@ -89,26 +89,11 @@ func TestResolveCodexHome(t *testing.T) {
 	})
 }
 
-func TestNeedsShellSpawn(t *testing.T) {
-	tests := []struct {
-		name string
-		path string
-		goos string
-		want bool
-	}{
-		{"windows cmd", `C:\tools\codex.cmd`, "windows", true},
-		{"windows bat uppercase", `C:\tools\CODEX.BAT`, "windows", true},
-		{"windows exe", `C:\tools\codex.exe`, "windows", false},
-		{"windows no extension", `C:\tools\codex`, "windows", false},
-		{"darwin cmd", "/usr/local/bin/codex.cmd", "darwin", false},
-		{"linux bat", "/usr/local/bin/codex.bat", "linux", false},
-	}
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			if got := NeedsShellSpawn(test.path, test.goos); got != test.want {
-				t.Errorf("NeedsShellSpawn(%q, %q) = %v, want %v", test.path, test.goos, got, test.want)
-			}
-		})
+func TestVersionMatchesUpstreamRelease(t *testing.T) {
+	// Upstream's "runtime version matches package metadata" test pins VERSION
+	// to package.json; the Go port pins it to the upstream release it ports.
+	if Version != "1.1.0" {
+		t.Errorf("Version = %q, want the ported upstream release %q", Version, "1.1.0")
 	}
 }
 
